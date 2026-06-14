@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+
+    {
+      "name": "Frontend Angular",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm.cmd run start",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Backend API",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "dotnet run --project ../backend/src/GardenBattle.Api/GardenBattle.Api.csproj --launch-profile http",
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Garden Battle: Frontend + Backend",
+      "configurations": ["Backend API", "Frontend Angular"],
+      "stopAll": true
+    }
+  ]
+}

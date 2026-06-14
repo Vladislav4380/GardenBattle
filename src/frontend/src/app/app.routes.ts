@@ -1,0 +1,11 @@
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'garden' },
+  { path: 'garden', loadComponent: () => import('./pages/garden/garden.page').then((m) => m.GardenPage) },
+  { path: 'team', loadComponent: () => import('./pages/team/team.page').then((m) => m.TeamPage) },
+  { path: 'battle', loadComponent: () => import('./pages/battle/battle.page').then((m) => m.BattlePage) },
+  { path: 'tournament', loadComponent: () => import('./pages/tournament/tournament.page').then((m) => m.TournamentPage) },
+  { path: 'market', loadComponent: () => import('./pages/market/market.page').then((m) => m.MarketPage) },
+  { path: 'profile', loadComponent: () => import('./pages/profile/profile.page').then((m) => m.ProfilePage) }
+];

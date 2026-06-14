@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/modules/">
+    <Project Path="modules/GardenBattle.Modules.Battle/GardenBattle.Modules.Battle.csproj" />
+    <Project Path="modules/GardenBattle.Modules.Garden/GardenBattle.Modules.Garden.csproj" />
+    <Project Path="modules/GardenBattle.Modules.Identity/GardenBattle.Modules.Identity.csproj" />
+    <Project Path="modules/GardenBattle.Modules.Market/GardenBattle.Modules.Market.csproj" />
+    <Project Path="modules/GardenBattle.Modules.Payment/GardenBattle.Modules.Payment.csproj" />
+    <Project Path="modules/GardenBattle.Modules.Reward/GardenBattle.Modules.Reward.csproj" />
+    <Project Path="modules/GardenBattle.Modules.Tournament/GardenBattle.Modules.Tournament.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/GardenBattle.Api/GardenBattle.Api.csproj" />
+    <Project Path="src/GardenBattle.BattleEngine/GardenBattle.BattleEngine.csproj" />
+    <Project Path="src/GardenBattle.Gateway/GardenBattle.Gateway.csproj" />
+    <Project Path="src/GardenBattle.Shared.Contracts/GardenBattle.Shared.Contracts.csproj" />
+  </Folder>
+</Solution>

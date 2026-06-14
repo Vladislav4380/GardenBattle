@@ -1,0 +1,29 @@
+.arena {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+}
+
+.team {
+  display: grid;
+  gap: 10px;
+}
+
+.unit {
+  border: 1px solid #d6e6c8;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px;
+  text-align: center;
+}
+
+.unit img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+progress {
+  width: 100%;
+}

@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "frontend: start",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": ["run", "start"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "angular",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Building.*",
+          "endsPattern": ".*Local:.*http://localhost:4200.*|.*Compiled successfully.*|.*Application bundle generation complete.*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "backend: api",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/src/backend/src/GardenBattle.Api/GardenBattle.Api.csproj",
+        "--launch-profile",
+        "http"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "dotnet",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Building.*",
+          "endsPattern": ".*Now listening on:.*https://localhost:7106.*|.*Application started.*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "app: start frontend + backend",
+      "dependsOrder": "parallel",
+      "dependsOn": ["backend: api", "frontend: start"],
+      "problemMatcher": []
+    }
+  ]
+}
