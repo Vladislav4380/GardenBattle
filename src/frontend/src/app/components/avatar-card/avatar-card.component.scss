@@ -1,0 +1,210 @@
+.avatar-card {
+  width: 100%;
+  min-height: 260px;
+
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 3px solid rgba(255, 236, 170, 0.95);
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  background: rgba(255, 244, 212, 0.96);
+
+  position: relative;
+
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.28);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.avatar-card:active {
+  transform: scale(0.98);
+}
+
+.avatar-card.selected {
+  border-color: #8cff37;
+
+  box-shadow:
+    0 0 0 3px rgba(140, 255, 55, 0.35),
+    0 0 22px rgba(140, 255, 55, 0.65),
+    0 10px 22px rgba(0, 0, 0, 0.34);
+}
+
+.avatar-card.locked {
+  opacity: 0.55;
+}
+
+.avatar-image {
+  height: 185px;
+
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.avatar-image::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.02) 0%,
+    rgba(0, 0, 0, 0.08) 55%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+
+  z-index: 1;
+}
+
+.avatar-person {
+  position: relative;
+  z-index: 2;
+
+  max-width: 95%;
+  max-height: 180px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 10px 12px rgba(0, 0, 0, 0.45));
+}
+
+.selected-mark {
+  position: absolute;
+  z-index: 4;
+
+  top: 10px;
+  right: 10px;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(180deg, #9cff44 0%, #51b915 100%);
+
+  color: #fff;
+
+  font-size: 31px;
+  font-weight: 900;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 4px 0 #2f7f0f,
+    0 8px 14px rgba(0, 0, 0, 0.38);
+}
+
+.locked-mark {
+  position: absolute;
+  z-index: 4;
+
+  top: 12px;
+  right: 12px;
+
+  font-size: 28px;
+}
+
+.avatar-caption {
+  min-height: 76px;
+
+  padding: 12px 14px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(38, 118, 22, 0.96) 0%,
+    rgba(18, 75, 13, 0.98) 100%
+  );
+
+  border-top: 2px solid rgba(174, 255, 105, 0.35);
+
+  color: #fffbe4;
+
+  text-align: left;
+}
+
+.caption-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 17px;
+  font-weight: 900;
+
+  line-height: 1.1;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.leaf-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.avatar-caption p {
+  margin: 7px 0 0;
+
+  color: #fff1bc;
+
+  font-size: 14px;
+  line-height: 1.28;
+
+  font-weight: 600;
+
+  text-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 420px) {
+  .avatar-card {
+    min-height: 230px;
+    border-radius: 18px;
+  }
+
+  .avatar-image {
+    height: 160px;
+  }
+
+  .avatar-person {
+    max-height: 155px;
+  }
+
+  .avatar-caption {
+    min-height: 72px;
+    padding: 10px 12px;
+  }
+
+  .caption-title {
+    font-size: 15px;
+  }
+
+  .avatar-caption p {
+    font-size: 13px;
+  }
+
+  .selected-mark {
+    width: 38px;
+    height: 38px;
+    font-size: 26px;
+  }
+}

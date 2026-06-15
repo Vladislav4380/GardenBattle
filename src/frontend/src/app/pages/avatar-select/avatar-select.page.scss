@@ -1,0 +1,193 @@
+.avatar-select-page {
+  --background: transparent;
+}
+
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  background-image: url('/assets/avatar-select/background.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.avatar-page {
+  position: relative;
+  z-index: 3;
+
+  padding: 16px;
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.title-panel {
+  background: rgba(255, 244, 212, 0.96);
+
+  border-radius: 24px;
+
+  padding: 16px;
+
+  text-align: center;
+
+  border: 2px solid rgba(130, 95, 35, 0.18);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.title-panel h1 {
+  margin: 0;
+
+  color: #2d5c18;
+
+  font-size: 32px;
+
+  font-weight: 900;
+
+  line-height: 1;
+}
+
+.title-panel p {
+  margin: 10px 0 0;
+
+  color: #4f4024;
+
+  font-size: 15px;
+
+  line-height: 1.35;
+
+  font-weight: 600;
+}
+
+.avatar-grid {
+  margin-top: 16px;
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 14px;
+}
+
+.selected-panel {
+  margin-top: 16px;
+
+  background: rgba(255, 244, 212, 0.96);
+
+  border-radius: 22px;
+
+  padding: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border: 2px solid rgba(130, 95, 35, 0.18);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.selected-text {
+  flex: 1;
+}
+
+.selected-text h2 {
+  margin: 0;
+
+  color: #4a3419;
+
+  font-size: 22px;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.selected-text p {
+  margin: 8px 0 0;
+
+  color: #4f4024;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  font-weight: 600;
+}
+
+.selected-preview {
+  width: 120px;
+  height: 120px;
+
+  object-fit: contain;
+
+  flex-shrink: 0;
+}
+
+.select-button {
+  margin-top: 16px;
+
+  height: 72px;
+
+  font-size: 30px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  --border-radius: 22px;
+
+  --background: linear-gradient(
+    180deg,
+    #9ff143 0%,
+    #61bd16 100%
+  );
+
+  --background-activated: #4fa312;
+
+  --color: #ffffff;
+
+  --box-shadow:
+      0 8px 0 #2d7d0c,
+      0 14px 24px rgba(0, 0, 0, 0.35);
+}
+
+.select-button::part(native) {
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 420px) {
+  .title-panel h1 {
+    font-size: 28px;
+  }
+
+  .selected-preview {
+    width: 90px;
+    height: 90px;
+  }
+
+  .selected-text h2 {
+    font-size: 18px;
+  }
+
+  .selected-text p {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,43 @@
+<ion-content fullscreen class="avatar-select-page">
+  <div class="page-bg"></div>
+  <div class="page-overlay"></div>
+
+  <main class="avatar-page">
+    <section class="title-panel">
+      <h1>&#1042;&#1099;&#1073;&#1077;&#1088;&#1080;&#1090;&#1077; &#1093;&#1088;&#1072;&#1085;&#1080;&#1090;&#1077;&#1083;&#1103;</h1>
+      <p>
+        &#1050;&#1072;&#1078;&#1076;&#1099;&#1081; &#1093;&#1088;&#1072;&#1085;&#1080;&#1090;&#1077;&#1083;&#1100; &#1080;&#1084;&#1077;&#1077;&#1090; &#1091;&#1085;&#1080;&#1082;&#1072;&#1083;&#1100;&#1085;&#1099;&#1081; &#1089;&#1090;&#1080;&#1083;&#1100;.<br />
+        &#1042;&#1099;&#1073;&#1086;&#1088; &#1074;&#1083;&#1080;&#1103;&#1077;&#1090; &#1090;&#1086;&#1083;&#1100;&#1082;&#1086; &#1085;&#1072; &#1074;&#1085;&#1077;&#1096;&#1085;&#1080;&#1081; &#1074;&#1080;&#1076; &#1080; &#1088;&#1072;&#1079;&#1074;&#1080;&#1090;&#1080;&#1077; &#1087;&#1088;&#1086;&#1092;&#1080;&#1083;&#1103;.
+      </p>
+    </section>
+
+    <section class="avatar-grid">
+      <app-avatar-card
+        *ngFor="let avatar of avatars"
+        [avatar]="avatar"
+        [selected]="selectedAvatarCode === avatar.code"
+        (select)="selectAvatar($event)">
+      </app-avatar-card>
+    </section>
+
+    <section class="selected-panel" *ngIf="selectedAvatar">
+      <div class="selected-text">
+        <h2>{{ selectedAvatar.name }}</h2>
+        <p>{{ selectedAvatar.description }}</p>
+      </div>
+
+      <img
+        class="selected-preview"
+        [src]="selectedAvatar.previewUrl"
+        [alt]="selectedAvatar.name"
+      />
+    </section>
+
+    <ion-button
+      expand="block"
+      class="select-button"
+      (click)="confirm()">
+      &#1042;&#1099;&#1073;&#1088;&#1072;&#1090;&#1100;
+    </ion-button>
+  </main>
+</ion-content>

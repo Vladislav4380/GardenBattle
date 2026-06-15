@@ -1,0 +1,35 @@
+<button
+  type="button"
+  class="avatar-card"
+  [class.selected]="selected"
+  [class.locked]="avatar.locked"
+  (click)="onSelect()">
+
+  <div
+    class="avatar-image"
+    [style.background-image]="'url(' + avatar.backgroundUrl + ')'">
+
+    <img
+      class="avatar-person"
+      [src]="avatar.imageUrl"
+      [alt]="avatar.name"
+    />
+
+    <div class="selected-mark" *ngIf="selected">
+      &#10003;
+    </div>
+
+    <div class="locked-mark" *ngIf="avatar.locked">
+      &#128274;
+    </div>
+  </div>
+
+  <div class="avatar-caption">
+    <div class="caption-title">
+      <span class="leaf-icon">&#127807;</span>
+      <span>{{ avatar.name }}</span>
+    </div>
+
+    <p>{{ avatar.shortDescription }}</p>
+  </div>
+</button>
