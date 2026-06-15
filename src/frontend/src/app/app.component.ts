@@ -6,7 +6,7 @@ import { TelegramMiniAppService } from './core/telegram-mini-app.service';
   selector: 'gb-root',
   standalone: true,
   imports: [IonApp, IonRouterOutlet],
-  template: '<ion-app><ion-router-outlet /></ion-app>'
+  template: '<ion-app><ion-router-outlet [animated]="false" /></ion-app>'
 })
 export class AppComponent {
   private readonly telegram = inject(TelegramMiniAppService);

@@ -1,0 +1,201 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-page {
+  --background: #071108;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-page::part(scroll) {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.welcome-bg {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 0;
+  width: min(100vw, 56.3dvh);
+  height: 100dvh;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 222, 116, 0.2), transparent 30%),
+    url('/assets/startup/startup-bg.jpg') center top / auto 100% no-repeat,
+    #071108;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.26), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.26)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.2) 35%, rgba(0, 0, 0, 0.66) 100%);
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: min(100vw, 430px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 40px) 18px calc(env(safe-area-inset-bottom) + 28px);
+}
+
+.hero-block {
+  margin-top: clamp(18px, 3vh, 34px);
+  text-align: center;
+}
+
+.welcome-title {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 7px 18px 8px;
+  border: 2px solid rgba(120, 71, 21, 0.75);
+  border-radius: 999px;
+  color: #ffe9a7;
+  background:
+    linear-gradient(180deg, rgba(128, 74, 28, 0.9), rgba(77, 39, 15, 0.94)),
+    #5b3518;
+  box-shadow:
+    0 4px 0 rgba(45, 24, 9, 0.82),
+    0 10px 20px rgba(0, 0, 0, 0.34),
+    inset 0 2px 0 rgba(255, 239, 177, 0.32);
+  font-size: clamp(15px, 4.2vw, 19px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(55, 28, 7, 0.95);
+  text-transform: uppercase;
+}
+
+.welcome-subtitle {
+  max-width: 350px;
+  margin: clamp(220px, 34vh, 330px) auto 0;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 227, 166, 0.58);
+  border-radius: 14px;
+  color: #fff7d8;
+  background:
+    linear-gradient(180deg, rgba(100, 58, 22, 0.68), rgba(42, 25, 12, 0.78)),
+    rgba(42, 25, 12, 0.72);
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 239, 177, 0.22);
+  font-size: clamp(13px, 3.45vw, 15px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-shadow: 0 2px 0 rgba(54, 29, 7, 0.95);
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.feature-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-height: 84px;
+  padding: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(128, 83, 26, 0.28);
+  border-radius: 18px;
+  background: rgba(255, 244, 210, 0.94);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.feature-card img {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.feature-card h2 {
+  margin: 0;
+  color: #2f6b19;
+  font-size: 17px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.feature-card p {
+  margin: 4px 0 0;
+  color: #3e321f;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.start-button {
+  height: 58px;
+  margin-top: 14px;
+  font-size: 22px;
+  font-weight: 900;
+
+  --background: linear-gradient(180deg, #9aea42 0%, #4fae18 100%);
+  --background-activated: #3d9213;
+  --border-radius: 18px;
+  --box-shadow: 0 8px 0 #2c6f12, 0 14px 24px rgba(0, 0, 0, 0.35);
+  --color: #fff8df;
+}
+
+@media (max-height: 720px) {
+  .welcome-content {
+    padding-top: calc(env(safe-area-inset-top) + 26px);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+  }
+
+  .hero-block {
+    margin-top: 12px;
+  }
+
+  .welcome-title {
+    padding: 6px 14px 7px;
+    font-size: 14px;
+  }
+
+  .welcome-subtitle {
+    max-width: 316px;
+    margin-top: clamp(180px, 31vh, 235px);
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .feature-card {
+    min-height: 78px;
+    padding: 10px;
+  }
+
+  .feature-card img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .feature-card h2 {
+    font-size: 17px;
+  }
+
+  .feature-card p {
+    font-size: 13px;
+  }
+
+  .start-button {
+    height: 56px;
+    font-size: 22px;
+  }
+}

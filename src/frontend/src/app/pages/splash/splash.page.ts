@@ -6,6 +6,7 @@ import { IonContent } from '@ionic/angular/standalone';
   selector: 'gb-splash',
   standalone: true,
   imports: [IonContent],
+  host: { class: 'ion-page' },
   templateUrl: './splash.page.html',
   styleUrl: './splash.page.scss'
 })
@@ -22,7 +23,7 @@ export class SplashPage implements OnInit, OnDestroy {
       if (this.progress >= 100) {
         this.clearTimer();
         this.redirectTimerId = window.setTimeout(() => {
-          void this.router.navigateByUrl('/garden');
+          void this.router.navigateByUrl('/welcome', { replaceUrl: true });
         }, 700);
       }
     }, 120);

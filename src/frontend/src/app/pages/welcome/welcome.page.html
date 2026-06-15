@@ -1,0 +1,47 @@
+<ion-content fullscreen class="welcome-page">
+  <div class="welcome-bg" aria-hidden="true"></div>
+  <div class="welcome-overlay"></div>
+
+  <main class="welcome-content">
+    <section class="hero-block">
+      <h1 class="welcome-title">{{ t.titleTop }}</h1>
+
+      <p class="welcome-subtitle">
+        {{ t.subtitle }}
+      </p>
+    </section>
+
+    <section class="feature-list">
+      <article class="feature-card">
+        <img src="/assets/welcome/grow.png" alt="">
+
+        <div>
+          <h2>{{ t.cards.grow.title }}</h2>
+          <p>{{ t.cards.grow.text }}</p>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <img src="/assets/welcome/team.png" alt="">
+
+        <div>
+          <h2>{{ t.cards.team.title }}</h2>
+          <p>{{ t.cards.team.text }}</p>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <img src="/assets/welcome/battle.png" alt="">
+
+        <div>
+          <h2>{{ t.cards.battle.title }}</h2>
+          <p>{{ t.cards.battle.text }}</p>
+        </div>
+      </article>
+    </section>
+
+    <ion-button expand="block" class="start-button" (click)="start()">
+      {{ t.startButton }}
+    </ion-button>
+  </main>
+</ion-content>
