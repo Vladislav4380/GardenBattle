@@ -129,6 +129,7 @@
   height: 66px;
 
   padding: 8px 10px;
+  overflow: hidden;
 
   background: linear-gradient(
     180deg,
@@ -141,6 +142,10 @@
 
   color: #fffbe4;
 
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 4px;
+
   text-align: left;
 }
 
@@ -149,13 +154,15 @@
   align-items: flex-start;
   gap: 8px;
 
+  min-height: 0;
+  overflow: hidden;
+
   font-size: 12px;
   font-weight: 900;
 
-  line-height: 1.1;
+  line-height: 1.05;
 
   text-transform: uppercase;
-  min-height: 28px;
 
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.45);
@@ -178,12 +185,13 @@
 .avatar-caption p {
   display: -webkit-box;
   overflow: hidden;
-  margin: 5px 0 0;
+  min-height: 0;
+  margin: 0;
 
   color: #fff1bc;
 
   font-size: 11px;
-  line-height: 1.28;
+  line-height: 1.18;
 
   font-weight: 600;
 
@@ -204,8 +212,9 @@
     right: 7px;
     bottom: 7px;
     left: 7px;
-    height: 60px;
+    height: 65px;
     padding: 7px 8px;
+    row-gap: 3px;
   }
 
   .caption-title {
@@ -234,6 +243,7 @@
     left: 6px;
     height: 54px;
     padding: 6px 7px;
+    row-gap: 2px;
   }
 
   .caption-title {
@@ -246,9 +256,8 @@
   }
 
   .avatar-caption p {
-    margin-top: 3px;
     font-size: 9px;
-    line-height: 1.18;
+    line-height: 1.12;
   }
 
   .selected-mark {

@@ -21,7 +21,7 @@ ion-content {
   padding: calc(10px + env(safe-area-inset-top)) 10px calc(86px + env(safe-area-inset-bottom));
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(5, 7, 5, 0.92) 72%),
-    url('/assets/ui/garden-bg.png') center top / cover no-repeat;
+    url('/assets/ui/garden-bg.webp') center top / cover no-repeat;
 }
 
 .top-hud {

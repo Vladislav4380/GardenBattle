@@ -10,7 +10,7 @@
   <section class="arena" *ngIf="realtime.state() as state">
     <div class="team allies">
       <button class="unit" *ngFor="let unit of state.leftTeam" (click)="selectAlly(unit)" [disabled]="!unit.isAlive">
-        <img [src]="'/assets/crops/' + unit.cropCode + '.png'" [alt]="unit.cropCode">
+        <img [src]="'/assets/crops/' + unit.cropCode + '.webp'" [alt]="unit.cropCode">
         <strong>{{ unit.cropCode }}</strong>
         <progress [value]="unit.hp" [max]="unit.maxHp"></progress>
         <ion-button size="small" *ngIf="unit.abilityCharge >= 100" (click)="useAbility(unit)">Super</ion-button>
@@ -19,7 +19,7 @@
 
     <div class="team enemies">
       <button class="unit" *ngFor="let unit of state.rightTeam" (click)="targetEnemy(unit)" [disabled]="!unit.isAlive">
-        <img [src]="'/assets/crops/' + unit.cropCode + '.png'" [alt]="unit.cropCode">
+        <img [src]="'/assets/crops/' + unit.cropCode + '.webp'" [alt]="unit.cropCode">
         <strong>{{ unit.cropCode }}</strong>
         <progress [value]="unit.hp" [max]="unit.maxHp"></progress>
       </button>

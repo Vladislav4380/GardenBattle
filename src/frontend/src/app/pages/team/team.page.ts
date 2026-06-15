@@ -11,7 +11,7 @@ import { ApiService } from '../../core/api.service';
     <ion-content>
       <section class="team" *ngIf="team$ | async as team">
         <article *ngFor="let slot of team.slots">
-          <img [src]="'/assets/crops/' + slot.cropCode + '.png'" [alt]="slot.cropCode">
+          <img [src]="'/assets/crops/' + slot.cropCode + '.webp'" [alt]="slot.cropCode">
           <strong>Slot {{ slot.slot }}</strong>
           <span>{{ slot.cropCode }}</span>
         </article>

@@ -5,8 +5,10 @@
   <main class="avatar-page">
     <img
       class="game-logo"
-      src="assets/avatar-select/logo.png"
+      src="assets/avatar-select/logo.webp"
       alt="Garden Battle"
+      loading="eager"
+      decoding="async"
     />
 
     <section class="title-panel">
@@ -36,6 +38,8 @@
         class="selected-preview"
         [src]="selectedAvatar.previewUrl"
         [alt]="selectedAvatar.name"
+        loading="eager"
+        decoding="async"
       />
     </section>
 

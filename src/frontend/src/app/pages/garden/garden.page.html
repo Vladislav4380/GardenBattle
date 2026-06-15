@@ -3,7 +3,7 @@
     <section class="top-hud">
       <div class="player-card">
         <div class="avatar-frame">
-          <img src="/assets/crops/corn.png" alt="Огородник">
+          <img src="/assets/crops/corn.webp" alt="Огородник">
           <span>23</span>
         </div>
         <div>
@@ -42,7 +42,7 @@
           </header>
 
           <div class="crop-stage">
-            <img *ngIf="plot.crop" [src]="'/assets/crops/' + plot.crop.cropCode + '.png'" [alt]="cropName(plot)">
+            <img *ngIf="plot.crop" [src]="'/assets/crops/' + plot.crop.cropCode + '.webp'" [alt]="cropName(plot)">
             <div class="lock-emblem" *ngIf="!plot.crop">★</div>
           </div>
 

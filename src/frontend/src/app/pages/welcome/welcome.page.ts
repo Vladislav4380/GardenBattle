@@ -21,18 +21,24 @@ export class WelcomePage implements OnInit {
 
   ngOnInit(): void {
     this.avatarSelectAssetsPreload = this.preloadImages([
-      '/assets/avatar-select/logo.png',
-      '/assets/avatars/young-gardener.png',
-      '/assets/avatars/forest-druid.png',
-      '/assets/avatars/harvest-guardian.png',
-      '/assets/avatars/season-traveler.png',
-      '/assets/avatars/young-gardener-preview.png'
+      '/assets/avatar-select/logo.webp',
+      '/assets/avatars/young-gardener.webp',
+      '/assets/avatars/forest-druid.webp',
+      '/assets/avatars/harvest-guardian.webp',
+      '/assets/avatars/season-traveler.webp',
+      '/assets/avatars/young-gardener-preview.webp'
     ]);
   }
 
-  async start(): Promise<void> {
-    await this.avatarSelectAssetsPreload;
-    await this.router.navigateByUrl('/avatar-select');
+  start(): void {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
+    void this.avatarSelectAssetsPreload;
+    requestAnimationFrame(() => {
+      void this.router.navigateByUrl('/avatar-select');
+    });
   }
 
   private preloadImages(urls: string[]): Promise<void> {
