@@ -1,0 +1,160 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.splash-page {
+  --background:
+    radial-gradient(circle at 50% 33%, rgba(255, 219, 99, 0.24), transparent 28%),
+    linear-gradient(180deg, rgba(26, 58, 104, 0.08) 0%, rgba(255, 171, 46, 0.04) 38%, rgba(4, 8, 4, 0.24) 74%, rgba(0, 0, 0, 0.68) 100%),
+    url('/assets/splash/background.jpg') center / cover no-repeat,
+    #0a1208;
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-page::part(scroll) {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.splash-page::part(background) {
+  transform: scale(1.015);
+}
+
+.splash-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(255, 227, 122, 0.1), transparent 34%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.18)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.08) 58%, rgba(0, 0, 0, 0.7));
+}
+
+.splash-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100vw, 430px);
+  height: 100dvh;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  overflow: hidden;
+}
+
+.heroes {
+  position: relative;
+  flex: 0 0 clamp(310px, 40vh, 390px);
+  width: 100%;
+  min-height: 310px;
+  margin-top: clamp(265px, 39vh, 405px);
+}
+
+.hero {
+  position: absolute;
+  bottom: 0;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.62));
+}
+
+.hero-tomato {
+  left: -2%;
+  bottom: 4px;
+  z-index: 3;
+  width: 43%;
+}
+
+.hero-carrot {
+  left: 24%;
+  bottom: 0;
+  z-index: 5;
+  width: 55%;
+}
+
+.hero-cucumber {
+  right: -4%;
+  bottom: 12px;
+  z-index: 4;
+  width: 42%;
+}
+
+.loading-block {
+  position: relative;
+  z-index: 8;
+  width: min(84%, 340px);
+  margin-top: -18px;
+  margin-bottom: clamp(28px, 5vh, 48px);
+  color: #fff;
+  text-align: center;
+}
+
+.loading-text {
+  margin-bottom: 12px;
+  font-size: clamp(19px, 5vw, 24px);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.82);
+}
+
+.loading-text span {
+  color: #67d12f;
+}
+
+.progress {
+  width: 100%;
+  height: 22px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 227, 166, 0.96);
+  border-radius: 999px;
+  background: rgba(24, 16, 9, 0.86);
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.55),
+    inset 0 2px 6px rgba(0, 0, 0, 0.65);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0 8px, transparent 8px 16px),
+    linear-gradient(90deg, #57bd27, #b8f153);
+  box-shadow: inset 0 2px 7px rgba(255, 255, 255, 0.28);
+  transition: width 0.3s ease;
+}
+
+.progress-value {
+  margin-top: 10px;
+  font-size: clamp(28px, 8vw, 38px);
+  font-weight: 800;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 370px) {
+  .heroes {
+    flex-basis: 310px;
+    margin-top: clamp(238px, 37vh, 315px);
+  }
+
+  .hero-tomato {
+    width: 42%;
+  }
+
+  .hero-carrot {
+    width: 54%;
+  }
+
+  .hero-cucumber {
+    width: 41%;
+  }
+
+  .loading-text {
+    font-size: 17px;
+  }
+}

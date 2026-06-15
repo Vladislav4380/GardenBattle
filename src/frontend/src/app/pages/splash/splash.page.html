@@ -1,0 +1,24 @@
+<ion-content fullscreen class="splash-page">
+  <div class="splash-overlay"></div>
+
+  <div class="splash-content">
+    <div class="heroes" aria-hidden="true">
+      <img class="hero hero-tomato" src="/assets/splash/tomato.png" alt="">
+      <img class="hero hero-carrot" src="/assets/splash/carrot.png" alt="">
+      <img class="hero hero-cucumber" src="/assets/splash/cucumber.png" alt="">
+    </div>
+
+    <div class="loading-block">
+      <div class="loading-text">
+        <span aria-hidden="true">&#127793;</span>
+        &#1055;&#1086;&#1076;&#1075;&#1086;&#1090;&#1072;&#1074;&#1083;&#1080;&#1074;&#1072;&#1077;&#1084; &#1075;&#1088;&#1103;&#1076;&#1082;&#1080;...
+      </div>
+
+      <div class="progress">
+        <div class="progress-fill" [style.width.%]="progress"></div>
+      </div>
+
+      <div class="progress-value">{{ progress }}%</div>
+    </div>
+  </div>
+</ion-content>

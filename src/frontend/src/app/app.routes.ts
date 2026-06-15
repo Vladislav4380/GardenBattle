@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'garden' },
+  { path: '', pathMatch: 'full', redirectTo: 'splash' },
+  { path: 'splash', loadComponent: () => import('./pages/splash/splash.page').then((m) => m.SplashPage) },
   { path: 'garden', loadComponent: () => import('./pages/garden/garden.page').then((m) => m.GardenPage) },
   { path: 'team', loadComponent: () => import('./pages/team/team.page').then((m) => m.TeamPage) },
   { path: 'battle', loadComponent: () => import('./pages/battle/battle.page').then((m) => m.BattlePage) },
