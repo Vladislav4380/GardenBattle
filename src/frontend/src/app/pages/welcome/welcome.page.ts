@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonContent } from '@ionic/angular/standalone';
 
@@ -12,14 +12,42 @@ type Lang = 'ru' | 'uk' | 'en';
   templateUrl: './welcome.page.html',
   styleUrl: './welcome.page.scss'
 })
-export class WelcomePage {
+export class WelcomePage implements OnInit {
   private readonly router = inject(Router);
   private readonly lang: Lang = this.detectLanguage();
+  private avatarSelectAssetsPreload?: Promise<void>;
 
   readonly t = translations[this.lang];
 
-  start(): void {
-    void this.router.navigateByUrl('/avatar-select');
+  ngOnInit(): void {
+    this.avatarSelectAssetsPreload = this.preloadImages([
+      '/assets/avatar-select/logo.png',
+      '/assets/avatars/young-gardener.png',
+      '/assets/avatars/forest-druid.png',
+      '/assets/avatars/harvest-guardian.png',
+      '/assets/avatars/season-traveler.png',
+      '/assets/avatars/young-gardener-preview.png'
+    ]);
+  }
+
+  async start(): Promise<void> {
+    await this.avatarSelectAssetsPreload;
+    await this.router.navigateByUrl('/avatar-select');
+  }
+
+  private preloadImages(urls: string[]): Promise<void> {
+    const tasks = urls.map((url) => new Promise<void>((resolve) => {
+      const image = new Image();
+
+      image.decoding = 'async';
+      image.onload = () => {
+        void image.decode().then(resolve).catch(resolve);
+      };
+      image.onerror = () => resolve();
+      image.src = url;
+    }));
+
+    return Promise.allSettled(tasks).then(() => undefined);
   }
 
   private detectLanguage(): Lang {
