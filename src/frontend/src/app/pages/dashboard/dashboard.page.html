@@ -1,0 +1,91 @@
+<ion-content fullscreen class="dashboard-page">
+  <main class="dashboard-shell">
+    <header class="game-header" aria-label="Профиль игрока">
+      <div class="avatar" aria-label="Аватар">
+        <img class="avatar-img" src="assets/avatars/young-gardener-preview.webp" alt="">
+      </div>
+      <div class="level-badge">1</div>
+
+      <div class="player-name">Молодой&#10;садовник</div>
+
+      <div class="currency coins" aria-label="Монеты">
+        <img class="coin-icon" src="assets/dashboard/hud-coin.png" alt="">
+        <span class="value">1250</span>
+        <img class="plus plus-icon" src="assets/dashboard/hub-plus.png" alt="">
+      </div>
+
+      <div class="currency gems" aria-label="Кристаллы">
+        <img class="gem-icon" src="assets/dashboard/hud-gem.png" alt="">
+        <span class="value">30</span>
+        <img class="plus plus-icon" src="assets/dashboard/hub-plus.png" alt="">
+      </div>
+
+      <button class="shop" type="button" aria-label="Магазин">
+        <img src="assets/dashboard/hud-shop.png" alt="">
+      </button>
+
+      <div class="currency xp" aria-label="Прогресс уровня 120 из 300">
+        <img class="level-icon" src="assets/dashboard/hud-level-star.png" alt="">
+        <span class="value">120/300</span>
+      </div>
+    </header>
+
+    <section class="dashboard-content" aria-label="Основные блоки страницы">
+  <div class="dashboard-block garden-block">
+  
+    <div class="wood-frame">
+    <div class="wood-side wood-top"></div>
+    <div class="wood-side wood-bottom"></div>
+    <div class="wood-side wood-left"></div>
+    <div class="wood-side wood-right"></div>
+
+    <div class="wood-corner wood-tl"></div>
+    <div class="wood-corner wood-tr"></div>
+    <div class="wood-corner wood-bl"></div>
+    <div class="wood-corner wood-br"></div>
+  </div>
+    <div class="garden-header">
+    <div class="garden-title">
+      <img class="garden-sprout" src="assets/dashboard/hud-nav-garden.png" alt="" />
+      <span>ОГОРОД</span>
+    </div>
+    <div class="garden-count">3/4 грядки занято</div>
+  </div>
+
+  <div class="garden-plots">
+    <div class="garden-plot ready">
+      <img class="crop crop-tomato" src="assets/dashboard/tomatto.png" alt="" />
+      <div class="plot-status">Готово!</div>
+      <div class="plot-ok">✓</div>
+    </div>
+
+    <div class="garden-plot timer">
+      <img class="crop crop-carrot" src="assets/dashboard/carrot.png" alt="" />
+      <div class="plot-status">23м 45с</div>
+      <div class="plot-timer">⏱</div>
+    </div>
+
+    <div class="garden-plot ready">
+      <img class="crop crop-cucumber" src="assets/dashboard/cucumber.png" alt="" />
+      <div class="plot-status">Готово!</div>
+      <div class="plot-ok">✓</div>
+    </div>
+
+    <div class="garden-plot locked">
+      <div class="soil locked-soil"></div>
+      <div class="lock-icon">🔒</div>
+      <div class="locked-text">Откроется<br>на 5 уровне</div>
+    </div>
+  </div>
+
+  <button class="harvest-button" type="button">
+    <span>СОБРАТЬ УРОЖАЙ</span>
+    <span class="basket-icon">🧺</span>
+  </button>
+</div>
+      <div class="dashboard-block"></div>
+      <div class="dashboard-block"></div>
+      <div class="dashboard-block"></div>
+    </section>
+  </main>
+</ion-content>

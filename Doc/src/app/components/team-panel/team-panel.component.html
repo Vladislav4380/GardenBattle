@@ -1,0 +1,17 @@
+<app-game-panel
+  title="Команда"
+  icon="⚔️"
+  [rightText]="'Сила команды: ' + teamPower + ' 🛡'">
+
+  <div class="team-row">
+    <app-fighter-card
+      *ngFor="let fighter of fighters"
+      [fighter]="fighter">
+    </app-fighter-card>
+
+    <button type="button" class="battle-button" (click)="battleClick.emit()">
+      <span class="swords">⚔️</span>
+      <span>В бой!</span>
+    </button>
+  </div>
+</app-game-panel>

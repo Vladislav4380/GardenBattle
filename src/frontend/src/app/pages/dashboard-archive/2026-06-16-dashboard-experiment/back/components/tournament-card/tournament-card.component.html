@@ -1,0 +1,14 @@
+<article class="tournament-card">
+  <h2><span>🏆</span> Турнир недели</h2>
+
+  <div class="league-row">
+    <img src="assets/dashboard/mock-league-badge.webp" alt="">
+    <div>
+      <strong>{{ tournament.league }}</strong>
+      <p>Ваше место: <b>{{ tournament.place }}</b></p>
+      <p>Участников: {{ tournament.participants }}</p>
+    </div>
+  </div>
+
+  <button type="button" (click)="tournamentOpened.emit()">К турниру</button>
+</article>

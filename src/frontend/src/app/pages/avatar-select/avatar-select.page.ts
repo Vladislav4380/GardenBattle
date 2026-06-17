@@ -90,6 +90,6 @@ export class AvatarSelectPage {
 
   confirm(): void {
     localStorage.setItem('gardenBattle.guardianAvatarCode', this.selectedAvatarCode);
-    void this.router.navigateByUrl('/starter-garden');
+    void this.router.navigateByUrl('/dashboard');
   }
 }

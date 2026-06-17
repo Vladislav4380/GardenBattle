@@ -1,0 +1,36 @@
+<header class="profile-header">
+  <div class="avatar-frame">
+    <img [src]="player.avatarUrl" [alt]="player.name">
+    <span class="avatar-level">{{ player.level }}</span>
+  </div>
+
+  <section class="hero-panel">
+    <div class="currency-row">
+      <div class="currency-pill coin">
+        <span class="currency-icon">★</span>
+        <strong>{{ currencies.coins }}</strong>
+        <span class="plus">+</span>
+      </div>
+
+      <div class="currency-pill gem">
+        <span class="currency-icon">◆</span>
+        <strong>{{ currencies.gems }}</strong>
+        <span class="plus">+</span>
+      </div>
+
+      <button type="button" class="shop-button" (click)="shopOpened.emit()" aria-label="Открыть магазин">
+        🛒
+      </button>
+    </div>
+
+    <h1>{{ player.name }}</h1>
+
+    <div class="experience-row">
+      <span class="level-star">{{ player.level }}</span>
+      <div class="xp-bar">
+        <div [style.width.%]="experiencePercent"></div>
+        <strong>{{ player.experience }}/{{ player.nextLevelExperience }}</strong>
+      </div>
+    </div>
+  </section>
+</header>

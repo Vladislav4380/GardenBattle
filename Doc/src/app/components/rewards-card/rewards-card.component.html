@@ -1,0 +1,41 @@
+<app-game-panel title="Награды" icon="🎁">
+  <div class="reward-title">Ежедневная награда</div>
+
+  <div class="reward-items">
+    <div class="reward-item">
+      <span>🪙</span>
+      <strong>{{ reward.coins }}</strong>
+    </div>
+
+    <div class="reward-item">
+      <span>💎</span>
+      <strong>{{ reward.gems }}</strong>
+    </div>
+
+    <div class="reward-item">
+      <span>🎴</span>
+      <strong>{{ reward.cards }}</strong>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="claim-button"
+    [disabled]="!reward.canClaim"
+    (click)="claimClick.emit()">
+    Получить
+  </button>
+
+  <div class="chest-row">
+    <div class="chest-info">
+      <span>Следующий сундук</span>
+
+      <div class="chest-progress">
+        <div class="chest-fill" [style.width.%]="chestPercent"></div>
+        <strong>{{ reward.chestProgress }}/{{ reward.chestTarget }}</strong>
+      </div>
+    </div>
+
+    <div class="chest-icon">🧰</div>
+  </div>
+</app-game-panel>

@@ -1,0 +1,567 @@
+:host {
+  display: block;
+  color: #fff8d8;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.dashboard-page {
+  --background: #000;
+}
+
+.dashboard-shell {
+  position: relative;
+  width: 100%;
+  max-width: 437px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) 0 calc(18px + env(safe-area-inset-bottom));
+  background: #000;
+}
+
+.game-header,
+.dashboard-content {
+  position: relative;
+  z-index: 1;
+}
+
+.game-header,
+.game-header * {
+  box-sizing: border-box;
+}
+
+.game-header {
+  isolation: isolate;
+  position: relative;
+  width: 100%;
+  max-width: 437px;
+  aspect-ratio: 437 / 206;
+  min-height: 170px;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.game-header::before {
+  content: '';
+  position: absolute;
+  top: 29.13%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  background: url('/assets/dashboard/bg-dashboard.webp') center top / contain no-repeat;
+}
+
+.avatar {
+  position: absolute;
+  left: -12.25%;
+  top: 0.58%;
+  z-index: 3;
+  width: 55.14%;
+  aspect-ratio: 1;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+
+.avatar-img {
+  display: block;
+  width: 112%;
+  height: 112%;
+  object-fit: contain;
+  transform: translate(-4%, -5%);
+}
+
+.level-badge {
+  position: absolute;
+  left: 8.7%;
+  top: 58.3%;
+  z-index: 7;
+  display: grid;
+  place-items: center;
+  width: 8.7%;
+  aspect-ratio: 1;
+  border: 2px solid #8a4d13;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 25%, #fff3a0 0 16%, transparent 17%),
+    linear-gradient(#ffd45a, #c17416);
+  color: #fff8da;
+  font-size: clamp(12px, 3.66vw, 16px);
+  font-weight: 500;
+}
+
+.player-name {
+  position: absolute;
+  left: 25.63%;
+  top: 15.15%;
+  z-index: 5;
+  width: 19.91%;
+  color: #fff8d8;
+  font-size: clamp(14px, 4.12vw, 18px);
+  font-weight: 500;
+  line-height: 1.1;
+  white-space: pre-line;
+}
+
+.currency {
+  position: absolute;
+  top: clamp(20px, 4.58vw, 20px);
+  z-index: 12;
+  height: clamp(27px, 6.18vw, 27px);
+  border: 2px solid #7a4a1d;
+  border-radius: 14px;
+  background: transparent;
+}
+
+.coins {
+  left: 46.45%;
+  width: 19.91%;
+}
+
+.gems {
+  left: 69.34%;
+  width: 13.96%;
+}
+
+.xp {
+  left: 28.58%;
+  top: clamp(76px, 17.39vw, 76px);
+  width: 36.61%;
+  height: clamp(25px, 5.72vw, 25px);
+  border-radius: 10px;
+  background: #000;
+}
+
+.xp::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  bottom: 2px;
+  z-index: 1;
+  width: calc(40% - 2px);
+  border-radius: 7px 3px 3px 7px;
+  background: linear-gradient(to bottom, #8fd02b 0%, #2f7f10 100%);
+}
+
+.value {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  color: #fffce8;
+  font-size: clamp(10px, 2.98vw, 13px);
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+}
+
+.coin-icon {
+  position: absolute;
+  left: -23.23%;
+  top: -45%;
+  width: 59.78%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.gem-icon {
+  position: absolute;
+  left: -34.43%;
+  top: -45%;
+  width: 88.68%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.level-icon {
+  position: absolute;
+  left: -16%;
+  top: 50%;
+  z-index: 3;
+  width: 42%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transform: translateY(-50%);
+}
+
+.plus {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(42px, 10.53vw, 46px);
+  height: clamp(42px, 10.53vw, 46px);
+  border: 2px solid #d5ff7e;
+  border-radius: 50%;
+  background: linear-gradient(#a7e63b, #3c8d15);
+  color: #fff;
+  font-size: clamp(13px, 4.12vw, 18px);
+  font-weight: 500;
+  line-height: 18px;
+  transform: translateY(-50%);
+}
+
+.plus-icon {
+  border: 0;
+  background: transparent;
+  object-fit: contain;
+}
+
+.shop {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  position: absolute;
+  right: 1.6%;
+  top: clamp(8px, 1.83vw, 8px);
+  z-index: 13;
+  width: clamp(52px, 13.27vw, 58px);
+  height: clamp(52px, 13.27vw, 58px);
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: transparent;
+  line-height: 0;
+  font-size: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 5px 5px 0;
+}
+
+.dashboard-block {
+  position: relative;
+  min-height: 112px;
+  border: 1px solid rgba(247, 189, 54, .38);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(39, 65, 27, .82), rgba(15, 25, 14, .94));
+}
+
+@media (max-width: 360px) {
+  .dashboard-content {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .game-header {
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .avatar,
+  .level-badge,
+  .currency,
+  .shop,
+  .avatar-img,
+  .coin-icon,
+  .gem-icon,
+  .level-icon,
+  .plus {
+    border-width: 2px;
+  }
+}
+
+.garden-block {
+  position: relative;
+  min-height: 248px;
+  padding: 20px 18px 22px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 18px;
+  background: url('/assets/dashboard/bg-dashboard.png') center / 100% 100% no-repeat;
+}
+
+.garden-block > * {
+  position: relative;
+  z-index: 2;
+}
+
+.wood-frame {
+  display: none;
+}
+
+.wood-side {
+  position: absolute;
+  background-image: url('/assets/dashboard/wood-border-top.png');
+  background-repeat: repeat-x;
+  background-size: auto 14px;
+}
+
+.wood-top {
+  left: 26px;
+  right: 26px;
+  top: 0;
+  height: 14px;
+}
+
+.wood-bottom {
+  left: 26px;
+  right: 26px;
+  bottom: 0;
+  height: 14px;
+  transform: scaleY(-1);
+}
+
+.wood-left {
+  top: 26px;
+  bottom: 26px;
+  left: 0;
+  width: 14px;
+  background-repeat: repeat-y;
+  background-size: 14px auto;
+  transform: none;
+}
+
+.wood-right {
+  top: 26px;
+  bottom: 26px;
+  right: 0;
+  width: 14px;
+  background-repeat: repeat-y;
+  background-size: 14px auto;
+  transform: scaleX(-1);
+}
+
+.wood-corner {
+  position: absolute;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  background-image: url('/assets/dashboard/wood-corner-tl.png');
+  background-repeat: no-repeat;
+  background-size: 95px 63px;
+  background-position: -28px -11px;
+}
+
+.wood-tl {
+  left: 0;
+  top: 0;
+  transform: scaleY(-1);
+}
+
+.wood-tr {
+  right: 0;
+  top: 0;
+  transform: scale(-1);
+}
+
+.wood-bl {
+  left: 0;
+  bottom: 0;
+  transform: none;
+}
+
+.wood-br {
+  right: 0;
+  bottom: 0;
+  transform: scaleX(-1);
+}
+.garden-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 6px 5px;
+}
+
+.garden-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #f7e1a2;
+  font-size: 18px;
+  font-weight: 800;
+  text-shadow: 0 2px 0 #1b0a02;
+}
+
+.garden-sprout {
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  flex: 0 0 50px;
+  margin-left: -15px;
+}
+
+.garden-count {
+  color: #ffe8a6;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 2px 0 #1b0a02;
+}
+
+.garden-plots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  height: 150px;
+}
+
+.garden-plot {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #2b1304;
+  border-radius: 9px;
+  background:
+    linear-gradient(180deg, rgba(64, 92, 15, .88), rgba(26, 31, 8, .96) 62%, #2a1406);
+  box-shadow:
+    inset 0 0 0 2px #231004,
+    inset 0 10px 16px rgba(255, 255, 130, .08);
+}
+
+.garden-plot.locked {
+  background:
+    linear-gradient(180deg, #211407, #130b04 70%);
+}
+
+.soil {
+  position: absolute;
+  z-index: 1;
+  left: 4%;
+  right: 4%;
+  bottom: 28px;
+  height: 42px;
+  border-radius: 50% 50% 12px 12px;
+  background:
+    radial-gradient(circle at 18% 42%, #9a6021 0 5px, transparent 6px),
+    radial-gradient(circle at 43% 55%, #5b3515 0 6px, transparent 7px),
+    radial-gradient(circle at 72% 46%, #8a4d1a 0 5px, transparent 6px),
+    repeating-linear-gradient(160deg, #5b3313 0 8px, #2b1608 9px 16px);
+}
+
+.locked-soil {
+  opacity: .45;
+}
+
+.crop {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transform: scale(1.18);
+  transform-origin: center;
+}
+
+/* сюда подставь свои картинки */
+// .crop-carrot {
+//   background-image: url('/assets/dashboard/crop-carrot.png');
+// }
+
+// .crop-tomato {
+//   background-image: url('/assets/dashboard/crop-tomato.png');
+// }
+
+// .crop-cucumber {
+//   background-image: url('/assets/dashboard/crop-cucumber.png');
+// }
+
+.plot-status {
+  position: absolute;
+  z-index: 3;
+  left: 4px;
+  right: 24px;
+  bottom: 5px;
+  display: grid;
+  place-items: center;
+  height: 24px;
+  border: 2px solid #8bbd21;
+  border-radius: 6px;
+  background: linear-gradient(#8ac926, #3f8d13);
+  color: #fffde4;
+  font-size: 12px;
+  font-weight: 800;
+  text-shadow: 0 1px 0 #214b08;
+}
+
+.plot-ok,
+.plot-timer {
+  position: absolute;
+  z-index: 4;
+  right: 4px;
+  bottom: 5px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.plot-ok {
+  border: 2px solid #b8ef4c;
+  background: linear-gradient(#85c92a, #3b8c14);
+}
+
+.plot-timer {
+  border: 2px solid #d9ba63;
+  background: linear-gradient(#7a5720, #3d240c);
+  font-size: 13px;
+}
+
+.lock-icon {
+  position: absolute;
+  left: 50%;
+  top: 42px;
+  transform: translateX(-50%);
+  font-size: 32px;
+  opacity: .8;
+}
+
+.locked-text {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 10px;
+  color: #e8c98a;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 2px 0 #000;
+}
+
+.harvest-button {
+  position: absolute;
+  left: 24%;
+  bottom: 10px;
+  width: 52%;
+  height: 39px;
+  border: 2px solid #9be134;
+  border-radius: 9px;
+  background: linear-gradient(#8ed02b, #4a9818);
+  color: #fffde5;
+  font-size: 14px;
+  font-weight: 900;
+  text-shadow: 0 2px 0 #214707;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.25),
+    0 3px 0 #224f0b;
+}
+
+.basket-icon {
+  position: absolute;
+  right: -14px;
+  bottom: -4px;
+  font-size: 34px;
+}

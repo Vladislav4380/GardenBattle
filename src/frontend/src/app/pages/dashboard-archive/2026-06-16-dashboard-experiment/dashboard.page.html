@@ -1,0 +1,32 @@
+<ion-content fullscreen class="dashboard-page">
+  <main class="dashboard-shell">
+    <gb-profile-header
+      [player]="player"
+      [currencies]="currencies"
+      (shopOpened)="openShop()" />
+
+    <gb-garden-panel
+      [plots]="gardenPlots"
+      (harvestClicked)="harvest()" />
+
+    <gb-team-panel
+      [fighters]="team"
+      [teamPower]="teamPower"
+      (battleStarted)="startBattle()" />
+
+    <section class="dashboard-widgets">
+      <gb-tournament-card
+        [tournament]="tournament"
+        (tournamentOpened)="openTournament()">
+      </gb-tournament-card>
+
+      <gb-rewards-card
+        [rewards]="rewards"
+        (rewardClaimed)="claimReward()" />
+    </section>
+  </main>
+
+  <gb-bottom-nav
+    [tabs]="tabs"
+    (tabSelected)="navigateTab($event)" />
+</ion-content>

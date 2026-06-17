@@ -1,0 +1,208 @@
+:host {
+  display: block;
+}
+
+.wood-panel {
+  margin-top: 8px;
+  border: 3px solid #9c6126;
+  border-radius: 19px;
+  background:
+    repeating-linear-gradient(0deg, rgba(61, 31, 10, 0.2) 0 1px, transparent 1px 35px),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 196, 85, 0.12), transparent 52%),
+    linear-gradient(180deg, #774315 0%, #4a250b 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 221, 139, 0.18),
+    inset 0 -7px 15px rgba(0, 0, 0, 0.35),
+    0 7px 17px rgba(0, 0, 0, 0.42);
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px 6px;
+
+  h2 {
+    margin: 0;
+    color: #f7e0a4;
+    font-family: 'Lilita One', cursive;
+    font-size: clamp(26px, 7vw, 30px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 0 #5a3410, 0 4px 8px rgba(0, 0, 0, 0.42);
+  }
+
+  strong {
+    color: #f7ddb0;
+    font-size: clamp(12px, 3.8vw, 15px);
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    text-shadow: 0 2px 0 #4b270c;
+  }
+}
+
+.title-icon {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 23px;
+  vertical-align: 1px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) clamp(82px, 25vw, 102px);
+  gap: 6px;
+  padding: 6px 10px 12px;
+}
+
+.fighter-card {
+  position: relative;
+  min-height: clamp(134px, 39vw, 158px);
+  overflow: hidden;
+  border: 2px solid #9f7130;
+  border-radius: 13px;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(107, 147, 66, 0.34), transparent 43%),
+    linear-gradient(180deg, #263c27, #1d1007);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 236, 161, 0.16),
+    inset 0 -5px 9px rgba(0, 0, 0, 0.45),
+    0 5px 10px rgba(0, 0, 0, 0.35);
+
+  img {
+    display: block;
+    width: 100%;
+    height: clamp(88px, 26vw, 105px);
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+
+.fighter-meta {
+  position: absolute;
+  right: 7px;
+  bottom: 32px;
+  left: 7px;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  color: #ffe6aa;
+  font-size: clamp(12px, 3.8vw, 16px);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 0 #2a1506;
+
+  strong,
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.fighter-power {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  left: 7px;
+  height: 25px;
+  overflow: hidden;
+  border: 2px solid #6f4b1e;
+  border-radius: 8px;
+  background: #1b1007;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.56);
+
+  div {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(180deg, #a9eb3c, #52a915);
+  }
+
+  span {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #fffde2;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1;
+    text-shadow: 0 2px 0 #244d09;
+  }
+}
+
+.battle-button {
+  min-width: 0;
+  border: 3px solid #3a7eb3;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #4f9bdd 0%, #225f9c 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -6px 0 rgba(16, 67, 119, 0.8),
+    0 6px 13px rgba(0, 0, 0, 0.42);
+  color: #fff;
+  font-family: 'Lilita One', cursive;
+  font-size: clamp(24px, 7.5vw, 34px);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 3px 0 #12395f, 0 5px 8px rgba(0, 0, 0, 0.3);
+
+  span {
+    display: block;
+    margin-bottom: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(32px, 10vw, 44px);
+    line-height: 1;
+  }
+}
+
+@media (max-width: 380px) {
+  .panel-title h2 {
+    font-size: 27px;
+  }
+
+  .panel-title strong {
+    font-size: 13px;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 76px;
+    gap: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .fighter-card {
+    min-height: 128px;
+
+    img {
+      height: 84px;
+    }
+  }
+
+  .fighter-meta {
+    font-size: 11px;
+  }
+
+  .fighter-power {
+    height: 22px;
+
+    span {
+      font-size: 14px;
+    }
+  }
+
+  .battle-button {
+    font-size: 27px;
+
+    span {
+      font-size: 36px;
+    }
+  }
+}

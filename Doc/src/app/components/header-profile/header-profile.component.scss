@@ -1,0 +1,201 @@
+.header-profile {
+  position: relative;
+  min-height: 148px;
+  border-radius: 16px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 94px 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 10px;
+  background:
+    linear-gradient(90deg, rgba(14, 19, 10, 0.96), rgba(22, 35, 18, 0.75)),
+    url('/assets/dashboard/bg-profile.jpg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 -40px 80px rgba(0,0,0,.28);
+}
+
+.avatar-wrap {
+  grid-row: 1 / span 2;
+  position: relative;
+  width: 94px;
+  height: 112px;
+}
+
+.avatar-img {
+  width: 94px;
+  height: 94px;
+  object-fit: cover;
+  border-radius: 22px;
+  border: 4px solid #8a5527;
+  box-shadow: inset 0 0 0 2px #2f1908, 0 4px 8px rgba(0,0,0,.45);
+}
+
+.avatar-level {
+  position: absolute;
+  left: -2px;
+  bottom: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #79512a, #3d220d);
+  border: 3px solid #b98743;
+  color: #fff;
+  font-weight: 950;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 2px 2px #000;
+}
+
+.profile-center {
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.profile-center h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 950;
+  line-height: 1.05;
+  text-shadow: 0 3px 0 #1b1209, 0 4px 8px rgba(0,0,0,.75);
+}
+
+.xp-row {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.level-star {
+  width: 34px;
+  height: 34px;
+  margin-right: -8px;
+  z-index: 2;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffd957, #d98911);
+  border: 2px solid #7c4c0d;
+  color: white;
+  font-weight: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 2px 2px #6a3700;
+}
+
+.xp-bar {
+  position: relative;
+  flex: 1;
+  height: 25px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #2a1a0c;
+  border: 3px solid #6f431e;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.6);
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(180deg, #b4f546, #57b515);
+}
+
+.xp-bar span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+  text-shadow: 0 2px 2px #000;
+}
+
+.currency-row {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.currency-pill {
+  height: 34px;
+  min-width: 78px;
+  padding: 0 6px;
+  border-radius: 13px;
+  background: linear-gradient(180deg, #5d3519, #2b170a);
+  border: 3px solid #8f5c2c;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: 950;
+  text-shadow: 0 2px 2px #000;
+}
+
+.currency-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.coin {
+  background: linear-gradient(180deg, #ffd950, #e08a11);
+}
+
+.gem {
+  color: #6be5ff;
+  font-size: 22px;
+}
+
+.plus {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #67c51b;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+}
+
+.shop-button {
+  width: 46px;
+  height: 46px;
+  border: 3px solid #8feb2c;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #8be735, #3c960e);
+  box-shadow: 0 4px 0 #225d0a, 0 5px 10px rgba(0,0,0,.4);
+  font-size: 24px;
+}
+
+@media (max-width: 380px) {
+  .header-profile {
+    grid-template-columns: 82px 1fr;
+  }
+
+  .avatar-wrap,
+  .avatar-img {
+    width: 82px;
+  }
+
+  .avatar-img {
+    height: 82px;
+  }
+
+  .profile-center h1 {
+    font-size: 22px;
+  }
+
+  .currency-pill {
+    min-width: 68px;
+    font-size: 14px;
+  }
+}

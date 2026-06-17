@@ -1,0 +1,26 @@
+<article class="rewards-card">
+  <h2><span>🎁</span> Награды</h2>
+
+  <div class="reward-content">
+    <section class="daily-reward">
+      <strong>Ежедневная награда</strong>
+
+      <div class="reward-items">
+        <span class="coin">★ <b>{{ rewards.coins }}</b></span>
+        <span class="gem">◆ <b>{{ rewards.gems }}</b></span>
+        <span class="card">✿ <b>{{ rewards.cards }}</b></span>
+      </div>
+
+      <button type="button" (click)="rewardClaimed.emit()">Получить</button>
+    </section>
+
+    <section class="chest-block">
+      <img src="assets/dashboard/mock-chest.webp" alt="">
+      <p>Следующий сундук</p>
+      <div class="mini-progress">
+        <div [style.width.%]="(rewards.chestProgress / rewards.chestTarget) * 100"></div>
+        <span>{{ rewards.chestProgress }}/{{ rewards.chestTarget }}</span>
+      </div>
+    </section>
+  </div>
+</article>

@@ -1,0 +1,15 @@
+<app-game-panel title="Турнир недели" icon="🏆" variant="purple">
+  <div class="tournament-content">
+    <div class="league-badge">🌿</div>
+
+    <div class="league-info">
+      <h3>{{ tournament.leagueName }}</h3>
+      <p>Ваше место: <strong>{{ tournament.rank }}</strong></p>
+      <p>Участников: {{ tournament.participants }}</p>
+    </div>
+  </div>
+
+  <button type="button" class="tournament-button" (click)="openTournamentClick.emit()">
+    К турниру
+  </button>
+</app-game-panel>

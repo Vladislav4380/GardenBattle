@@ -5,6 +5,7 @@ export const routes: Routes = [
   { path: 'splash', loadComponent: () => import('./pages/splash/splash.page').then((m) => m.SplashPage) },
   { path: 'welcome', loadComponent: () => import('./pages/welcome/welcome.page').then((m) => m.WelcomePage) },
   { path: 'avatar-select', loadComponent: () => import('./pages/avatar-select/avatar-select.page').then((m) => m.AvatarSelectPage) },
+  { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.page').then((m) => m.DashboardPage) },
   { path: 'starter-garden', pathMatch: 'full', redirectTo: 'garden' },
   { path: 'garden', loadComponent: () => import('./pages/garden/garden.page').then((m) => m.GardenPage) },
   { path: 'team', loadComponent: () => import('./pages/team/team.page').then((m) => m.TeamPage) },

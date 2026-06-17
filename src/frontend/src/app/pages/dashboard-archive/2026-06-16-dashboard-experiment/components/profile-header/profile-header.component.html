@@ -1,0 +1,40 @@
+<header class="profile-header">
+  <div class="avatar-frame">
+    <img [src]="player.avatarUrl" [alt]="player.name">
+    <span class="avatar-level">{{ player.level }}</span>
+  </div>
+
+  <section class="hero-panel">
+    <div class="currency-row">
+      <div class="currency-pill">
+        <img class="currency-icon" src="assets/dashboard/hud-coin.png" alt="">
+        <strong>{{ currencies.coins }}</strong>
+        <span class="plus">+</span>
+      </div>
+
+      <div class="currency-pill gem-pill">
+        <img class="currency-icon" src="assets/dashboard/hud-gem.png" alt="">
+        <strong>{{ currencies.gems }}</strong>
+        <span class="plus">+</span>
+      </div>
+
+      <button type="button" class="shop-button" (click)="shopOpened.emit()" aria-label="Open shop">
+        <img src="assets/dashboard/hud-shop.png" alt="">
+      </button>
+    </div>
+
+    <h1>{{ player.name }}</h1>
+
+    <div class="experience-row">
+      <span class="level-star">
+        <img src="assets/dashboard/hud-level-star.png" alt="">
+        <strong>{{ player.level }}</strong>
+      </span>
+
+      <div class="xp-bar">
+        <div [style.width.%]="experiencePercent"></div>
+        <strong>{{ player.experience }}/{{ player.nextLevelExperience }}</strong>
+      </div>
+    </div>
+  </section>
+</header>

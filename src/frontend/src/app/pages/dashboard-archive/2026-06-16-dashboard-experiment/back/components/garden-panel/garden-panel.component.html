@@ -1,0 +1,33 @@
+<section class="wood-panel garden-panel">
+  <div class="panel-title">
+    <h2><span class="title-icon">🌱</span>Огород</h2>
+    <strong>{{ occupiedPlotsText }}</strong>
+  </div>
+
+  <div class="plot-grid">
+    <article
+      *ngFor="let plot of plots"
+      class="plot-card"
+      [ngClass]="plot.state">
+      <ng-container *ngIf="plot.state !== 'locked'; else lockedPlot">
+        <img [src]="plot.cropUrl" [alt]="plot.cropName">
+
+        <div class="plot-status" [ngClass]="plot.state">
+          <span *ngIf="plot.state === 'ready'">Готово!</span>
+          <span *ngIf="plot.state === 'growing'">{{ plot.timer }}</span>
+          <b>{{ plot.state === 'ready' ? '✓' : '⏱' }}</b>
+        </div>
+      </ng-container>
+
+      <ng-template #lockedPlot>
+        <div class="lock-icon">🔒</div>
+        <p>{{ plot.note }}</p>
+      </ng-template>
+    </article>
+  </div>
+
+  <button type="button" class="harvest-button" (click)="harvestClicked.emit()">
+    Собрать урожай
+    <span>🧺</span>
+  </button>
+</section>

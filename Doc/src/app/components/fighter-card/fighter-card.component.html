@@ -1,0 +1,17 @@
+<article class="fighter-card">
+  <div class="fighter-image-wrap">
+    <img [src]="fighter.image" [alt]="fighter.name" />
+  </div>
+
+  <div class="fighter-info">
+    <div class="fighter-name-row">
+      <span>{{ fighter.name }}</span>
+      <b>Ур. {{ fighter.level }}</b>
+    </div>
+
+    <div class="hp-bar">
+      <div class="hp-fill" [style.width.%]="hpPercent"></div>
+      <span>{{ fighter.currentHp }}/{{ fighter.maxHp }}</span>
+    </div>
+  </div>
+</article>

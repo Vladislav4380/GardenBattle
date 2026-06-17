@@ -1,0 +1,17 @@
+<app-game-panel
+  title="Огород"
+  icon="🌱"
+  [rightText]="occupiedCount + '/' + plots.length + ' грядки занято'">
+
+  <div class="plots-row">
+    <app-garden-plot-card
+      *ngFor="let plot of plots"
+      [plot]="plot">
+    </app-garden-plot-card>
+  </div>
+
+  <button type="button" class="harvest-button" (click)="harvestClick.emit()">
+    <span>Собрать урожай</span>
+    <span class="basket">🧺</span>
+  </button>
+</app-game-panel>

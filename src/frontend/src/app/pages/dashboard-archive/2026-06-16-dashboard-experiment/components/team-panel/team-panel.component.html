@@ -1,0 +1,30 @@
+<section class="wood-panel team-panel">
+  <div class="panel-title">
+    <h2>
+      <img class="title-icon" src="assets/dashboard/hud-battle-swords.png" alt="">
+      Команда
+    </h2>
+    <strong>Сила команды: {{ teamPower }}</strong>
+  </div>
+
+  <div class="team-grid">
+    <article *ngFor="let fighter of fighters" class="fighter-card">
+      <img [src]="fighter.imageUrl" [alt]="fighter.name">
+
+      <div class="fighter-meta">
+        <strong>{{ fighter.name }}</strong>
+        <span>Ур. {{ fighter.level }}</span>
+      </div>
+
+      <div class="fighter-power">
+        <div [style.width.%]="(fighter.power / fighter.maxPower) * 100"></div>
+        <span>{{ fighter.power }}/{{ fighter.maxPower }}</span>
+      </div>
+    </article>
+
+    <button type="button" class="battle-button" (click)="battleStarted.emit()">
+      <img src="assets/dashboard/hud-battle-swords.png" alt="">
+      В бой!
+    </button>
+  </div>
+</section>
