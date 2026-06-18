@@ -1,10 +1,12 @@
 <ion-content fullscreen class="dashboard-page">
+  <div class="dashboard-viewport" [style.--dashboard-scale]="dashboardScale">
   <main class="dashboard-shell">
     <header class="game-header" aria-label="Профиль игрока">
       <div class="avatar" aria-label="Аватар">
         <img class="avatar-img" src="assets/avatars/young-gardener-preview.webp" alt="">
       </div>
 
+      <div class="header-top-row">
       <div class="player-name">Молодой&#10;садовник</div>
 
       <div class="currency coins" aria-label="Монеты">
@@ -22,6 +24,7 @@
       <button class="shop" type="button" aria-label="Магазин">
         <img src="assets/dashboard/hud-shop.png" alt="">
       </button>
+      </div>
 
       <div class="currency xp" aria-label="Прогресс уровня 120 из 300">
         <img class="level-icon" src="assets/dashboard/hud-level-star.png" alt="">
@@ -170,4 +173,5 @@
       </nav>
     </section>
   </main>
+  </div>
 </ion-content>

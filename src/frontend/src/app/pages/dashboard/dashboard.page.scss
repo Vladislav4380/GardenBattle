@@ -8,14 +8,28 @@
   --background: #000;
 }
 
+.dashboard-viewport {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
 .dashboard-shell {
   position: relative;
-  width: 100%;
-  max-width: 437px;
-  min-height: 100%;
-  margin: 0 auto;
-  padding: env(safe-area-inset-top) 0 calc(69px + env(safe-area-inset-bottom));
+  width: 390px;
+  height: 844px;
+  box-sizing: border-box;
+  flex: 0 0 390px;
+  margin: 0;
+  padding: env(safe-area-inset-top) 0 calc(1px + env(safe-area-inset-bottom));
   background: #000;
+  transform: scale(var(--dashboard-scale, 1));
+  transform-origin: top center;
 }
 
 .game-header,
@@ -42,12 +56,9 @@
 .game-header::before {
   content: '';
   position: absolute;
-  top: 29.13%;
-  right: 0;
-  bottom: -5px;
-  left: 0;
+  inset: 34% 0 -9px;
   z-index: 0;
-  background: url('/assets/dashboard/bg-dashboard.webp') center top / contain no-repeat;
+  background: url('/assets/dashboard/bg-dashboard.webp') right top / contain no-repeat;
 }
 
 .avatar {
@@ -90,11 +101,11 @@
 }
 
 .player-name {
-  position: absolute;
-  left: 25.63%;
-  top: 15.15%;
-  z-index: 5;
-  width: 19.91%;
+  position: relative;
+  z-index: 12;
+  flex: 0 0 76px;
+  width: 76px;
+  margin-top: 12px;
   color: #fff8d8;
   font-size: clamp(14px, 4.12vw, 18px);
   font-weight: 500;
@@ -102,31 +113,52 @@
   white-space: pre-line;
 }
 
+.header-top-row {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  left: 22.6%;
+  z-index: 12;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0;
+}
+
 .currency {
   position: absolute;
   top: clamp(20px, 4.58vw, 20px);
   z-index: 12;
-  height: clamp(27px, 6.18vw, 27px);
+  height: 22px;
   border: 2px solid #3f210d;
   border-radius: 14px;
   background: transparent;
 }
 
+.header-top-row .currency {
+  position: relative;
+  top: auto;
+  left: auto;
+  flex: 0 0 77px;
+  width: 77px;
+  margin-top: 12px;
+}
+
 .coins {
-  left: 46.45%;
-  width: 19.91%;
+  left: auto;
+  width: 77px;
 }
 
 .gems {
-  left: 69.34%;
-  width: 13.96%;
+  left: auto;
+  width: 77px;
 }
 
 .xp {
   left: 28.58%;
   top: clamp(76px, 17.39vw, 76px);
-  width: 36.61%;
-  height: clamp(25px, 5.72vw, 25px);
+  width: 35.61%;
+  height: clamp(22px, 5.72vw, 22px);
   border-radius: 10px;
   background: #000;
 }
@@ -156,22 +188,31 @@
   text-align: center;
 }
 
+.header-top-row .value {
+  padding: 0 22px 0 20px;
+  font-size: 11px;
+}
+
 .coin-icon {
   position: absolute;
-  left: -23.23%;
-  top: -45%;
-  width: 59.78%;
+  left: -12px;
+  top: 50%;
+  width: 38px;
+  height: 38px;
   aspect-ratio: 1;
   object-fit: contain;
+  transform: translateY(-50%);
 }
 
 .gem-icon {
   position: absolute;
-  left: -34.43%;
-  top: -45%;
-  width: 88.68%;
+  left: -12px;
+  top: 50%;
+  width: 38px;
+  height: 38px;
   aspect-ratio: 1;
   object-fit: contain;
+  transform: translateY(-50%);
 }
 
 .level-icon {
@@ -187,12 +228,12 @@
 
 .plus {
   position: absolute;
-  right: -20px;
+  right: -12px;
   top: 50%;
   display: grid;
   place-items: center;
-  width: clamp(42px, 10.53vw, 46px);
-  height: clamp(42px, 10.53vw, 46px);
+  width: 38px;
+  height: 38px;
   border: 2px solid #d5ff7e;
   border-radius: 50%;
   background: linear-gradient(#a7e63b, #3c8d15);
@@ -213,12 +254,13 @@
   appearance: none;
   -webkit-appearance: none;
   display: block;
-  position: absolute;
-  right: 1.6%;
-  top: clamp(8px, 1.83vw, 8px);
+  position: relative;
+  right: auto;
+  top: auto;
   z-index: 13;
-  width: clamp(52px, 13.27vw, 58px);
-  height: clamp(52px, 13.27vw, 58px);
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
   overflow: visible;
   padding: 0;
   border: 0;
@@ -238,10 +280,12 @@
 }
 
 .dashboard-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 133px);
+  gap: 4px;
   padding: 4px 2px 0;
+  box-sizing: border-box;
 }
 
 .dashboard-block {
@@ -260,11 +304,9 @@
 }
 
 .dashboard-nav-panel {
-  position: fixed;
-  right: max(0px, calc((100vw - 437px) / 2));
-  bottom: env(safe-area-inset-bottom);
-  left: max(0px, calc((100vw - 437px) / 2));
-  z-index: 20;
+  position: relative;
+  z-index: 1;
+  flex: 0 0 68px;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0;
@@ -371,12 +413,16 @@
 
 .garden-block:not(.garden-block-compact) {
   box-sizing: border-box;
+  flex: 0 0 226px;
+  height: 226px;
   min-height: 0;
   padding-bottom: 8px;
 }
 
 .garden-block-compact {
-  min-height: 210px;
+  flex: 0 0 209px;
+  height: 209px;
+  min-height: 0;
   padding-bottom: 16px;
 }
 
