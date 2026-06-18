@@ -232,26 +232,26 @@
 
   letter-spacing: 1px;
 
-  --border-radius: 22px;
-
-  --background: linear-gradient(
-    180deg,
-    #9ff143 0%,
-    #61bd16 100%
-  );
-
-  --background-activated: #4fa312;
-
-  --color: #ffffff;
-
+  --background: linear-gradient(180deg, #4a8514, #4a8514 48%, #4a8514, #4a8514);
+  --background-activated: #3f7410;
+  --border-color: #1d4308;
+  --border-radius: 13px;
+  --border-style: solid;
+  --border-width: 2px;
   --box-shadow:
-      0 8px 0 #2d7d0c,
-      0 14px 24px rgba(0, 0, 0, 0.35);
+    inset 0 -1px 0 rgba(15, 52, 5, .65),
+    0 3px 0 #102f05,
+    0 5px 6px rgba(0, 0, 0, .35);
+  --color: #fffbe2;
 }
 
 .select-button::part(native) {
+  overflow: hidden;
+  border-radius: 13px;
+  background-clip: padding-box;
   text-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.25);
+    0 2px 0 #275d0b,
+    1px 1px 0 #275d0b;
 }
 
 @media (max-width: 420px) {
