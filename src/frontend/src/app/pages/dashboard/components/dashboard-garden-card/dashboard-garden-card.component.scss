@@ -1,5 +1,6 @@
 :host {
   display: contents;
+  font-family: var(--dashboard-body-font, 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif);
 }
 
 .dashboard-block,
@@ -132,9 +133,11 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: 0;
   color: #f7e1a2;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: 0 2px 0 rgba(43, 18, 5, .72);
 }
 
 .garden-sprout {
@@ -149,8 +152,9 @@
 
 .garden-count {
   color: #ffe8a6;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(43, 18, 5, .72);
 }
 
 .garden-plots {
@@ -232,9 +236,11 @@
   border-radius: 10px;
   background: #000;
   color: #fffde4;
-  font-size: clamp(10px, 2.98vw, 13px);
-  font-weight: 400;
+  font-size: clamp(10px, 2.98vw, 12px);
+  font-weight: 700;
   line-height: 1;
+  text-shadow: 0 1px 0 rgba(22, 9, 2, .85);
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -285,8 +291,9 @@
     0 3px 0 #102f05,
     0 5px 6px rgba(0, 0, 0, .35);
   color: #fffbe2;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 2px 0 rgba(14, 44, 4, .72);
   white-space: nowrap;
 }
 

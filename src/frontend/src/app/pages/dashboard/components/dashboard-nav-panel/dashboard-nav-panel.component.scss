@@ -2,6 +2,7 @@
   display: block;
   flex: 0 0 76px;
   min-height: 76px;
+  font-family: var(--dashboard-body-font, 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif);
 }
 
 .dashboard-nav-panel,
@@ -43,10 +44,10 @@
   border-left: 1px solid rgba(107, 66, 24, .44);
   background: transparent;
   color: #f6d06b;
-  font: inherit;
-  font-size: clamp(8px, 2.1vw, 10px);
-  font-weight: 500;
+  font-size: clamp(8px, 2.1vw, 9.5px);
+  font-weight: 700;
   line-height: 1;
+  text-shadow: 0 1px 0 rgba(27, 12, 3, .82);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -64,7 +65,11 @@
 
 .dashboard-nav-item span {
   display: block;
+  max-width: 100%;
+  overflow: hidden;
   line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dashboard-nav-item.active {

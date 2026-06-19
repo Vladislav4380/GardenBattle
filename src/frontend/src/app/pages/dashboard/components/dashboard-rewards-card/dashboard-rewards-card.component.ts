@@ -12,5 +12,13 @@ export class DashboardRewardsCardComponent {
   @Input() cards = 0;
   @Input() chestProgressCurrent = 0;
   @Input() chestProgressTarget = 0;
-  @Input() chestProgressValue = 0;
+
+  get chestProgressPercent(): number {
+    if (this.chestProgressTarget <= 0) {
+      return 0;
+    }
+
+    const percent = (this.chestProgressCurrent / this.chestProgressTarget) * 100;
+    return Math.max(0, Math.min(percent, 100));
+  }
 }

@@ -12,6 +12,7 @@
       <gb-dashboard-garden-plot
         [state]="member.state"
         [slot]="member.slot"
+        [imageUrl]="member.imageUrl ?? ''"
         [imageBase64]="member.imageBase64 ?? ''"
         [imageMimeType]="member.imageMimeType ?? 'image/png'"
         [statusText]="member.statusText ?? ''"
@@ -20,7 +21,7 @@
     }
 
     <button class="garden-plot battle-entry-plot" type="button" aria-label="Перейти в бой">
-      <img class="battle-entry-icon" src="assets/dashboard/hud-battle-swords.png" alt="" />
+      <img class="battle-entry-icon" src="assets/shared/hud/hud-battle-swords.png" alt="" />
       <span class="battle-entry-text">В бой!</span>
     </button>
   </div>

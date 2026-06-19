@@ -9,12 +9,12 @@
 
     <div class="reward-list">
       <div class="reward-item">
-        <img class="reward-icon" src="assets/dashboard/hud-coin.png" alt="" />
+        <img class="reward-icon" src="assets/shared/hud/hud-coin.png" alt="" />
         <span>{{ coins }}</span>
       </div>
 
       <div class="reward-item">
-        <img class="reward-icon" src="assets/dashboard/hud-gem.png" alt="" />
+        <img class="reward-icon" src="assets/shared/hud/hud-gem.png" alt="" />
         <span>{{ gems }}</span>
       </div>
 
@@ -32,13 +32,13 @@
 
         <div class="progress-row">
           <div class="progress-bar" [attr.aria-label]="'Прогресс сундука ' + chestProgressCurrent + ' из ' + chestProgressTarget">
-            <span class="progress-fill" [style.width.%]="chestProgressValue"></span>
+            <span class="progress-fill" [style.width.%]="chestProgressPercent"></span>
             <span class="progress-value">{{ chestProgressCurrent }}/{{ chestProgressTarget }}</span>
           </div>
         </div>
       </div>
 
-      <img class="chest-image" src="assets/dashboard/hud-chest-closed.png" alt="" />
+      <img class="chest-image" src="assets/shared/hud/hud-chest-closed.png" alt="" />
     </div>
   </div>
 </article>

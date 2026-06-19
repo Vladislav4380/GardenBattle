@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable, delay, forkJoin, from, map, of, shareReplay, switchMap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of, shareReplay } from 'rxjs';
 import {
   DashboardGardenCardData,
   DashboardHeaderData,
@@ -10,46 +9,36 @@ import {
 } from '../models/dashboard.models';
 
 interface DashboardImageData {
-  imageBase64: string;
-  imageMimeType: string;
+  imageUrl: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class DashboardDataService {
-  private readonly http = inject(HttpClient);
-
   readonly header$: Observable<DashboardHeaderData> = of(this.createHeader()).pipe(
-    delay(120),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  readonly gardenCard$: Observable<DashboardGardenCardData> = forkJoin({
-    tomato: this.loadAssetImage('assets/dashboard/plot-tomato.png'),
-    carrot: this.loadAssetImage('assets/dashboard/plot-carrot.png'),
-    cucumber: this.loadAssetImage('assets/dashboard/plot-cucumber.png')
-  }).pipe(
-    map((images) => this.createGardenCard(images)),
-    delay(120),
+  readonly gardenCard$: Observable<DashboardGardenCardData> = of(this.createGardenCard({
+    tomato: this.createImageData('assets/dashboard/plot-tomato.webp'),
+    carrot: this.createImageData('assets/dashboard/plot-carrot.webp'),
+    cucumber: this.createImageData('assets/dashboard/plot-cucumber.webp')
+  })).pipe(
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  readonly teamCard$: Observable<DashboardTeamCardData> = forkJoin({
-    tomato: this.loadAssetImage('assets/dashboard/tomatto.png'),
-    carrot: this.loadAssetImage('assets/dashboard/carrot.png'),
-    cucumber: this.loadAssetImage('assets/dashboard/cucumber.png')
-  }).pipe(
-    map((images) => this.createTeamCard(images)),
-    delay(120),
+  readonly teamCard$: Observable<DashboardTeamCardData> = of(this.createTeamCard({
+    tomato: this.createImageData('assets/dashboard/tomatto.webp'),
+    carrot: this.createImageData('assets/dashboard/carrot.webp'),
+    cucumber: this.createImageData('assets/dashboard/cucumber.webp')
+  })).pipe(
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
   readonly tournamentCard$: Observable<DashboardTournamentCardData> = of(this.createTournamentCard()).pipe(
-    delay(120),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
   readonly rewardsCard$: Observable<DashboardRewardsCardData> = of(this.createRewardsCard()).pipe(
-    delay(120),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
@@ -66,7 +55,7 @@ export class DashboardDataService {
   private createGardenCard(images: Record<'tomato' | 'carrot' | 'cucumber', DashboardImageData>): DashboardGardenCardData {
     return {
       title: 'ОГОРОД',
-      iconSrc: 'assets/dashboard/hud-nav-garden.png',
+      iconSrc: 'assets/shared/hud/hud-nav-garden.png',
       summaryText: '3/4 грядки занято',
       plots: [
         {
@@ -132,7 +121,7 @@ export class DashboardDataService {
   private createTeamCard(images: Record<'tomato' | 'carrot' | 'cucumber', DashboardImageData>): DashboardTeamCardData {
     return {
       title: 'КОМАНДА',
-      iconSrc: 'assets/dashboard/hud-battle-swords.png',
+      iconSrc: 'assets/shared/hud/hud-battle-swords.png',
       summaryText: 'Сила команды: 120',
       members: [
         {
@@ -173,36 +162,14 @@ export class DashboardDataService {
       coins: 500,
       gems: 10,
       cards: 1,
-      chestProgressCurrent: 2,
-      chestProgressTarget: 10,
-      chestProgressValue: 27
+      chestProgressCurrent: 5,
+      chestProgressTarget: 10
     };
   }
 
-  private loadAssetImage(assetPath: string): Observable<DashboardImageData> {
-    return this.http.get(assetPath, { responseType: 'blob' }).pipe(
-      switchMap((blob) => from(this.blobToDataUrl(blob))),
-      map((dataUrl) => this.toImageData(dataUrl))
-    );
-  }
-
-  private blobToDataUrl(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = () => reject(reader.error);
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  private toImageData(dataUrl: string): DashboardImageData {
-    const [metadata, imageBase64] = dataUrl.split(',');
-    const imageMimeType = metadata.match(/^data:(.*);base64$/)?.[1] ?? 'image/png';
-
+  private createImageData(imageUrl: string): DashboardImageData {
     return {
-      imageBase64,
-      imageMimeType
+      imageUrl
     };
   }
 }

@@ -11,6 +11,7 @@ export class DashboardGardenPlotComponent {
   @Input() state: GardenPlotState = 'empty';
   @Input() slot = 0;
 
+  @Input() imageUrl = '';
   @Input() imageBase64 = '';
   @Input() imageMimeType = 'image/png';
   @Input() statusText = '';
@@ -33,6 +34,10 @@ export class DashboardGardenPlotComponent {
   }
 
   get imageSrc(): string {
+    if (this.imageUrl) {
+      return this.imageUrl;
+    }
+
     if (!this.imageBase64) {
       return '';
     }

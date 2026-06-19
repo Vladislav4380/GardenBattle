@@ -1,5 +1,6 @@
 :host {
   display: contents;
+  font-family: var(--dashboard-body-font, 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif);
 }
 
 .dashboard-block,
@@ -50,9 +51,11 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: 0;
   color: #f7e1a2;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: 0 2px 0 rgba(43, 18, 5, .72);
 }
 
 .garden-sprout {
@@ -67,8 +70,9 @@
 
 .garden-count {
   color: #ffe8a6;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(43, 18, 5, .72);
 }
 
 .garden-plots {
@@ -133,7 +137,7 @@
     0 4px 0 #09243c,
     0 7px 9px rgba(0, 0, 0, .42);
   color: #fffbe2;
-  font-weight: 500;
+  font-weight: 700;
   text-shadow: 0 2px 1px rgba(0, 0, 0, .58);
 }
 
@@ -148,7 +152,10 @@
 .battle-entry-text {
   position: relative;
   z-index: 2;
-  font-size: clamp(20px, 6.2vw, 26px);
+  max-width: 100%;
+  overflow: hidden;
+  font-size: clamp(16px, 5.2vw, 22px);
   line-height: 1;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }

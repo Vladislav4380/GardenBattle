@@ -2,6 +2,7 @@
   display: block;
   position: relative;
   z-index: 1;
+  font-family: var(--dashboard-body-font, 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif);
 }
 
 .game-header,
@@ -56,8 +57,9 @@
   margin-top: 0;
   color: #fff8d8;
   font-size: clamp(14px, 4.12vw, 18px);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.1;
+  text-shadow: 0 2px 0 rgba(55, 24, 6, .78);
   white-space: pre-line;
 }
 
@@ -133,10 +135,11 @@
   display: grid;
   place-items: center;
   color: #fffce8;
-  font-size: clamp(10px, 2.98vw, 13px);
-  font-weight: 500;
+  font-size: clamp(10px, 2.98vw, 12px);
+  font-weight: 700;
   line-height: 1;
   text-align: center;
+  text-shadow: 0 1px 0 rgba(38, 15, 3, .85);
 }
 
 .header-top-row .value {
@@ -204,6 +207,7 @@
   outline: 0;
   background: transparent;
   color: transparent;
+  cursor: pointer;
   line-height: 0;
   font-size: 0;
   -webkit-tap-highlight-color: transparent;

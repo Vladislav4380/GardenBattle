@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'gb-dashboard-header',
   standalone: true,
+  imports: [RouterLink],
   templateUrl: './dashboard-header.component.html',
   styleUrl: './dashboard-header.component.scss'
 })

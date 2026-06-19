@@ -4,6 +4,7 @@
   min-width: 76px;
   height: 100%;
   scroll-snap-align: start;
+  font-family: var(--dashboard-body-font, 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif);
 }
 
 .garden-plot,
@@ -78,9 +79,11 @@
   border-radius: 10px;
   background: #000;
   color: #fffde4;
-  font-size: clamp(10px, 2.98vw, 13px);
-  font-weight: 400;
+  font-size: clamp(10px, 2.98vw, 12px);
+  font-weight: 700;
   line-height: 1;
+  text-shadow: 0 1px 0 rgba(22, 9, 2, .85);
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -139,8 +142,8 @@
   border-radius: 9px;
   background: rgba(0, 0, 0, .62);
   color: #fff4c8;
-  font-size: clamp(10px, 2.8vw, 12px);
-  font-weight: 500;
+  font-size: clamp(10px, 2.75vw, 11px);
+  font-weight: 700;
   line-height: 1;
   text-align: center;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .72);

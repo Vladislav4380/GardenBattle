@@ -2,6 +2,7 @@
   display: block;
   flex: 0 1 44%;
   min-width: 0;
+  font-family: var(--dashboard-body-font, 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif);
 }
 
 .dashboard-card,
@@ -73,9 +74,10 @@
     0 4px 7px rgba(0, 0, 0, .3);
   color: #ffe89d;
   filter: drop-shadow(0 1px 0 rgba(34, 8, 39, .58));
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 1;
+  text-shadow: 0 2px 0 rgba(34, 8, 39, .72);
   white-space: nowrap;
 }
 
@@ -87,10 +89,12 @@
 }
 
 .league-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 5px;
   min-height: 74px;
+  padding-top: 16px;
 }
 
 .league-icon {
@@ -105,12 +109,14 @@
 .league-info {
   display: flex;
   min-width: 0;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 6px;
   color: #ffd481;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.15;
+  text-shadow: 0 1px 0 rgba(20, 7, 25, .72);
 }
 
 .league-info span,
@@ -119,10 +125,17 @@
 }
 
 .league-info strong {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   color: #fff4c8;
   font-size: 12px;
   line-height: 1.15;
-  margin-bottom: 4px;
+  margin-bottom: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
 }
 
 .game-button {
@@ -133,10 +146,10 @@
   border: 2px solid var(--button-border);
   border-radius: 13px;
   color: #fffbe2;
-  font-size: 13px;
-  font-family: inherit;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 1;
+  text-shadow: 0 2px 0 rgba(37, 8, 44, .72);
   white-space: nowrap;
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 180, .45),

@@ -3,7 +3,7 @@
 @import '@ionic/angular/css/structure.css';
 @import '@ionic/angular/css/typography.css';
 @import '@ionic/angular/css/display.css';
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Lilita+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700;800;900&family=Nunito:wght@500;700;800;900&display=swap');
 
 * {
   box-sizing: border-box;
@@ -12,7 +12,7 @@
 body {
   margin: 0;
   background: #080b08;
-  font-family: 'Baloo 2', sans-serif;
+  font-family: 'Nunito', 'Noto Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif;
 }
 
 a,

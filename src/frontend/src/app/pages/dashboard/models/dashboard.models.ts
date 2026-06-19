@@ -4,6 +4,7 @@ export interface DashboardGardenPlotData {
   id: number | string;
   slot: number;
   state: GardenPlotState;
+  imageUrl?: string;
   imageBase64?: string;
   imageMimeType?: string;
   statusText?: string;
@@ -21,6 +22,7 @@ export interface DashboardTeamMemberData {
   id: number | string;
   slot: number;
   state: GardenPlotState;
+  imageUrl?: string;
   imageBase64?: string;
   imageMimeType?: string;
   statusText?: string;
@@ -54,5 +56,4 @@ export interface DashboardRewardsCardData {
   cards: number;
   chestProgressCurrent: number;
   chestProgressTarget: number;
-  chestProgressValue: number;
 }

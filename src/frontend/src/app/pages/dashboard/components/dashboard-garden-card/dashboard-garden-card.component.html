@@ -24,6 +24,7 @@
       <gb-dashboard-garden-plot
         [state]="plot.state"
         [slot]="plot.slot"
+        [imageUrl]="plot.imageUrl ?? ''"
         [imageBase64]="plot.imageBase64 ?? ''"
         [imageMimeType]="plot.imageMimeType ?? 'image/png'"
         [statusText]="plot.statusText ?? ''"
@@ -34,6 +35,6 @@
 
   <button class="harvest-button" type="button">
     <span class="harvest-text">СОБРАТЬ УРОЖАЙ</span>
-    <img class="basket-icon" src="assets/dashboard/hud-harvest-basket.png" alt="" />
+    <img class="basket-icon" src="assets/shared/hud/hud-harvest-basket.png" alt="" />
   </button>
 </div>

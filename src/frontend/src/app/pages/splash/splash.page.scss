@@ -56,6 +56,10 @@
 }
 
 .loading-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-bottom: 12px;
   font-size: clamp(19px, 5vw, 24px);
   font-weight: 800;
@@ -63,8 +67,12 @@
   text-shadow: 0 3px 8px rgba(0, 0, 0, 0.82);
 }
 
-.loading-text span {
-  color: #67d12f;
+.loading-icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .62));
 }
 
 .progress {
