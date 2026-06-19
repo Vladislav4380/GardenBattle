@@ -1,0 +1,27 @@
+<div class="dashboard-block garden-block garden-block-compact">
+  <div class="garden-header">
+    <div class="garden-title">
+      <img class="garden-sprout" [src]="iconSrc" alt="" />
+      <span>{{ title }}</span>
+    </div>
+    <div class="garden-count">{{ summaryText }}</div>
+  </div>
+
+  <div class="garden-plots">
+    @for (member of members; track member.id) {
+      <gb-dashboard-garden-plot
+        [state]="member.state"
+        [slot]="member.slot"
+        [imageBase64]="member.imageBase64 ?? ''"
+        [imageMimeType]="member.imageMimeType ?? 'image/png'"
+        [statusText]="member.statusText ?? ''"
+        [unlockLevel]="member.unlockLevel"
+      ></gb-dashboard-garden-plot>
+    }
+
+    <button class="garden-plot battle-entry-plot" type="button" aria-label="Перейти в бой">
+      <img class="battle-entry-icon" src="assets/dashboard/hud-battle-swords.png" alt="" />
+      <span class="battle-entry-text">В бой!</span>
+    </button>
+  </div>
+</div>

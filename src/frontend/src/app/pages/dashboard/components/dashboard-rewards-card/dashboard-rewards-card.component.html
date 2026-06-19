@@ -1,0 +1,44 @@
+<article class="dashboard-card rewards-card">
+  <header class="card-title">
+    <img class="title-icon prize-icon" src="assets/dashboard/hub-prise.png" alt="" />
+    <span>НАГРАДЫ</span>
+  </header>
+
+  <div class="rewards-panel">
+    <div class="reward-caption">Ежедневная награда</div>
+
+    <div class="reward-list">
+      <div class="reward-item">
+        <img class="reward-icon" src="assets/dashboard/hud-coin.png" alt="" />
+        <span>{{ coins }}</span>
+      </div>
+
+      <div class="reward-item">
+        <img class="reward-icon" src="assets/dashboard/hud-gem.png" alt="" />
+        <span>{{ gems }}</span>
+      </div>
+
+      <div class="reward-item">
+        <img class="reward-icon" src="assets/dashboard/hub-card.png" alt="" />
+        <span>{{ cards }}</span>
+      </div>
+    </div>
+
+    <button class="game-button claim-button" type="button">ПОЛУЧИТЬ</button>
+
+    <div class="chest-bottom">
+      <div class="chest-progress">
+        <div class="chest-label">Следующий сундук</div>
+
+        <div class="progress-row">
+          <div class="progress-bar" [attr.aria-label]="'Прогресс сундука ' + chestProgressCurrent + ' из ' + chestProgressTarget">
+            <span class="progress-fill" [style.width.%]="chestProgressValue"></span>
+            <span class="progress-value">{{ chestProgressCurrent }}/{{ chestProgressTarget }}</span>
+          </div>
+        </div>
+      </div>
+
+      <img class="chest-image" src="assets/dashboard/hud-chest-closed.png" alt="" />
+    </div>
+  </div>
+</article>

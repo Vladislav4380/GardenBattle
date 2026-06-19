@@ -1,80 +1,9 @@
 :host {
-  display: block;
-  color: #fff8d8;
-  font-family: Arial, Helvetica, sans-serif;
+  display: contents;
 }
 
-.dashboard-page {
-  --background: #071108;
-  position: relative;
-  overflow: hidden;
-}
-
-.dashboard-page::part(background) {
-  background: #000;
-}
-
-.dashboard-page::part(scroll) {
-  min-height: 100dvh;
-}
-
-.dashboard-viewport {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  height: 100dvh;
-  min-height: 100%;
-  overflow: hidden;
-  background: #000;
-}
-
-.dashboard-shell {
-  position: relative;
-  width: 390px;
-  height: 844px;
-  box-sizing: border-box;
-  flex: 0 0 390px;
-  margin: 0;
-  padding: env(safe-area-inset-top) 0 calc(1px + env(safe-area-inset-bottom));
-  background: #000;
-  transform: scale(var(--dashboard-scale, 1));
-  transform-origin: top center;
-}
-
-@media (min-width: 431px) {
-  .dashboard-page::part(background) {
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.05) 0%,
-        rgba(0, 0, 0, 0.18) 52%,
-        rgba(0, 0, 0, 0.42) 100%
-      ),
-      url('/assets/avatar-select/background.webp') center top / auto 100% no-repeat,
-      #071108;
-  }
-
-  .dashboard-viewport {
-    background: transparent;
-  }
-
-  .dashboard-shell {
-    box-shadow: 0 0 34px rgba(0, 0, 0, .52);
-  }
-}
-
-.dashboard-content {
-  position: relative;
-  z-index: 1;
-}
-
-.dashboard-content {
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 133px);
-  gap: 4px;
-  padding: 4px 2px 0;
+.dashboard-block,
+.dashboard-block * {
   box-sizing: border-box;
 }
 
@@ -85,20 +14,6 @@
   border-radius: 8px;
   background:
     linear-gradient(180deg, rgba(39, 65, 27, .82), rgba(15, 25, 14, .94));
-}
-
-.dashboard-block-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
-}
-
-@media (max-width: 360px) {
-  .dashboard-content {
-    padding-right: 2px;
-    padding-left: 2px;
-  }
-
 }
 
 .garden-block {
@@ -117,19 +32,6 @@
   height: 226px;
   min-height: 0;
   padding-bottom: 8px;
-}
-
-.garden-block-compact {
-  flex: 0 0 197px;
-  height: 197px;
-  min-height: 0;
-  padding-bottom: 8px;
-}
-
-.dashboard-mini-block {
-  min-height: 112px;
-  padding: 0;
-  border-radius: 14px;
 }
 
 .garden-block > * {
@@ -217,6 +119,7 @@
   bottom: 0;
   transform: scaleX(-1);
 }
+
 .garden-header {
   display: flex;
   align-items: center;
@@ -251,26 +154,19 @@
 }
 
 .garden-plots {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  height: 150px;
-}
-
-.garden-block:not(.garden-block-compact) .garden-plots {
-  box-sizing: border-box;
   display: flex;
-  grid-template-columns: none;
   overflow-x: auto;
   overflow-y: hidden;
+  height: 150px;
   margin: 0 -2px;
   padding: 0 2px;
+  gap: 4px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
 
-.garden-block:not(.garden-block-compact) .garden-plots::-webkit-scrollbar {
+.garden-plots::-webkit-scrollbar {
   display: none;
 }
 
@@ -279,6 +175,8 @@
   -webkit-appearance: none;
   position: relative;
   overflow: hidden;
+  flex: 0 0 calc((100% - 12px) / 4);
+  min-width: 76px;
   padding: 0;
   border: 2px solid #7a4318;
   border-radius: 9px;
@@ -291,6 +189,7 @@
   cursor: pointer;
   font: inherit;
   text-align: left;
+  scroll-snap-align: start;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -304,12 +203,6 @@
   outline-offset: 2px;
 }
 
-.garden-block:not(.garden-block-compact) .garden-plot {
-  flex: 0 0 calc((100% - 12px) / 4);
-  min-width: 76px;
-  scroll-snap-align: start;
-}
-
 .crop {
   position: absolute;
   z-index: 2;
@@ -320,19 +213,6 @@
   transform: none;
   transform-origin: center;
 }
-
-/* сюда подставь свои картинки */
-// .crop-carrot {
-//   background-image: url('/assets/dashboard/crop-carrot.png');
-// }
-
-// .crop-tomato {
-//   background-image: url('/assets/dashboard/crop-tomato.png');
-// }
-
-// .crop-cucumber {
-//   background-image: url('/assets/dashboard/crop-cucumber.png');
-// }
 
 .plot-status {
   isolation: isolate;
@@ -371,30 +251,15 @@
 .plot-timer {
   position: absolute;
   z-index: 4;
-  right: 4px;
-  bottom: 5px;
+  right: -9px;
+  bottom: -7px;
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   font-size: 16px;
   font-weight: 500;
-}
-
-.plot-ok {
-  right: -9px;
-  bottom: -7px;
-  width: 46px;
-  height: 46px;
-  object-fit: contain;
-}
-
-.plot-timer {
-  right: -9px;
-  bottom: -7px;
-  width: 46px;
-  height: 46px;
   object-fit: contain;
 }
 

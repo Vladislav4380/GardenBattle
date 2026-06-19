@@ -1,0 +1,31 @@
+<header class="game-header" aria-label="Профиль игрока">
+  <div class="avatar" aria-label="Аватар">
+    <img class="avatar-img" src="assets/avatars/young-gardener-preview.webp" alt="">
+  </div>
+
+  <div class="header-top-row">
+    <div class="player-name">{{ playerName }}</div>
+
+    <div class="currency coins" aria-label="Монеты">
+      <img class="coin-icon" src="assets/dashboard/hud-coin.png" alt="">
+      <span class="value">{{ coins }}</span>
+      <img class="plus plus-icon" src="assets/dashboard/hub-plus.png" alt="">
+    </div>
+
+    <div class="currency gems" aria-label="Кристаллы">
+      <img class="gem-icon" src="assets/dashboard/hud-gem.png" alt="">
+      <span class="value">{{ gems }}</span>
+      <img class="plus plus-icon" src="assets/dashboard/hub-plus.png" alt="">
+    </div>
+
+    <button class="shop" type="button" aria-label="Магазин">
+      <img src="assets/dashboard/hud-shop.png" alt="">
+    </button>
+  </div>
+
+  <div class="currency xp" [attr.aria-label]="'Прогресс уровня ' + xpCurrent + ' из ' + xpTarget">
+    <span class="xp-fill" [style.width.%]="xpProgressPercent"></span>
+    <img class="level-icon" src="assets/dashboard/hud-level-star.png" alt="">
+    <span class="value">{{ xpText }}</span>
+  </div>
+</header>

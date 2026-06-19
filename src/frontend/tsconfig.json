@@ -4,10 +4,6 @@
     "module": "ES2022",
     "moduleResolution": "bundler",
     "strict": true,
-    "skipLibCheck": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@app/*": ["app/*"]
-    }
+    "skipLibCheck": true
   }
 }

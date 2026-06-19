@@ -1,176 +1,46 @@
 <ion-content fullscreen class="dashboard-page">
   <div class="dashboard-viewport" [style.--dashboard-scale]="dashboardScale">
-  <main class="dashboard-shell">
-    <header class="game-header" aria-label="Профиль игрока">
-      <div class="avatar" aria-label="Аватар">
-        <img class="avatar-img" src="assets/avatars/young-gardener-preview.webp" alt="">
-      </div>
+    <main class="dashboard-shell">
+      @if (dashboardData.header$ | async; as header) {
+        <gb-dashboard-header
+          [playerName]="header.playerName"
+          [coins]="header.coins"
+          [gems]="header.gems"
+          [xpCurrent]="header.xpCurrent"
+          [xpTarget]="header.xpTarget"
+        ></gb-dashboard-header>
+      }
 
-      <div class="header-top-row">
-      <div class="player-name">Молодой&#10;садовник</div>
+      <section class="dashboard-content" aria-label="Основные блоки страницы">
+        @if (dashboardData.gardenCard$ | async; as gardenCard) {
+          <gb-dashboard-garden-card
+            [title]="gardenCard.title"
+            [iconSrc]="gardenCard.iconSrc"
+            [summaryText]="gardenCard.summaryText"
+            [plots]="gardenCard.plots"
+          ></gb-dashboard-garden-card>
+        }
 
-      <div class="currency coins" aria-label="Монеты">
-        <img class="coin-icon" src="assets/dashboard/hud-coin.png" alt="">
-        <span class="value">1250</span>
-        <img class="plus plus-icon" src="assets/dashboard/hub-plus.png" alt="">
-      </div>
+        @if (dashboardData.teamCard$ | async; as teamCard) {
+          <gb-dashboard-team-card
+            [title]="teamCard.title"
+            [iconSrc]="teamCard.iconSrc"
+            [summaryText]="teamCard.summaryText"
+            [members]="teamCard.members"
+          ></gb-dashboard-team-card>
+        }
 
-      <div class="currency gems" aria-label="Кристаллы">
-        <img class="gem-icon" src="assets/dashboard/hud-gem.png" alt="">
-        <span class="value">30</span>
-        <img class="plus plus-icon" src="assets/dashboard/hub-plus.png" alt="">
-      </div>
+        @if (dashboardData.tournamentCard$ | async; as tournamentCard) {
+          @if (dashboardData.rewardsCard$ | async; as rewardsCard) {
+            <gb-dashboard-cards
+              [tournamentCard]="tournamentCard"
+              [rewardsCard]="rewardsCard"
+            ></gb-dashboard-cards>
+          }
+        }
 
-      <button class="shop" type="button" aria-label="Магазин">
-        <img src="assets/dashboard/hud-shop.png" alt="">
-      </button>
-      </div>
-
-      <div class="currency xp" aria-label="Прогресс уровня 120 из 300">
-        <img class="level-icon" src="assets/dashboard/hud-level-star.png" alt="">
-        <span class="value">120/300</span>
-      </div>
-    </header>
-
-    <section class="dashboard-content" aria-label="Основные блоки страницы">
-  <div class="dashboard-block garden-block">
-  
-    <div class="wood-frame">
-    <div class="wood-side wood-top"></div>
-    <div class="wood-side wood-bottom"></div>
-    <div class="wood-side wood-left"></div>
-    <div class="wood-side wood-right"></div>
-
-    <div class="wood-corner wood-tl"></div>
-    <div class="wood-corner wood-tr"></div>
-    <div class="wood-corner wood-bl"></div>
-    <div class="wood-corner wood-br"></div>
-  </div>
-    <div class="garden-header">
-    <div class="garden-title">
-      <img class="garden-sprout" src="assets/dashboard/hud-nav-garden.png" alt="" />
-      <span>ОГОРОД</span>
-    </div>
-    <div class="garden-count">3/4 грядки занято</div>
-  </div>
-
-  <div class="garden-plots">
-    <button class="garden-plot ready" type="button" aria-label="Грядка 1: готово">
-      <img class="crop crop-tomato" src="assets/dashboard/plot-tomato.png" alt="" />
-      <span class="plot-status">Готово!</span>
-      <img class="plot-ok" src="assets/dashboard/hub-ok.png" alt="" />
-    </button>
-
-    <button class="garden-plot timer" type="button" aria-label="Грядка 2: растет">
-      <img class="crop crop-carrot" src="assets/dashboard/plot-carrot.png" alt="" />
-      <span class="plot-status">23м 45с</span>
-      <img class="plot-timer" src="assets/dashboard/hub-timer.png" alt="" />
-    </button>
-
-    <button class="garden-plot ready" type="button" aria-label="Грядка 3: готово">
-      <img class="crop crop-cucumber" src="assets/dashboard/plot-cucumber.png" alt="" />
-      <span class="plot-status">Готово!</span>
-      <img class="plot-ok" src="assets/dashboard/hub-ok.png" alt="" />
-    </button>
-
-    <button class="garden-plot locked" type="button" aria-label="Грядка 4: закрыта">
-      <span class="soil locked-soil"></span>
-      <span class="lock-icon">🔒</span>
-      <span class="locked-text">Откроется<br>на 5 уровне</span>
-    </button>
-    <button class="garden-plot ready" type="button" aria-label="Грядка 5: готово">
-      <img class="crop crop-tomato" src="assets/dashboard/plot-tomato.png" alt="" />
-      <span class="plot-status">Готово!</span>
-      <img class="plot-ok" src="assets/dashboard/hub-ok.png" alt="" />
-    </button>
-
-    <button class="garden-plot timer" type="button" aria-label="Грядка 6: растет">
-      <img class="crop crop-carrot" src="assets/dashboard/plot-carrot.png" alt="" />
-      <span class="plot-status">23м 45с</span>
-      <img class="plot-timer" src="assets/dashboard/hub-timer.png" alt="" />
-    </button>
-
-    <button class="garden-plot ready" type="button" aria-label="Грядка 7: готово">
-      <img class="crop crop-cucumber" src="assets/dashboard/plot-cucumber.png" alt="" />
-      <span class="plot-status">Готово!</span>
-      <img class="plot-ok" src="assets/dashboard/hub-ok.png" alt="" />
-    </button>
-
-    <button class="garden-plot locked" type="button" aria-label="Грядка 8: закрыта">
-      <span class="soil locked-soil"></span>
-      <span class="lock-icon">🔒</span>
-      <span class="locked-text">Откроется<br>на 5 уровне</span>
-    </button>
-  </div>
-
-  <button class="harvest-button" type="button">
-    <span class="harvest-text">СОБРАТЬ УРОЖАЙ</span>
-    <img class="basket-icon" src="assets/dashboard/hud-harvest-basket.png" alt="" />
-  </button>
-</div>
-      <div class="dashboard-block garden-block garden-block-compact">
-        <div class="garden-header">
-          <div class="garden-title">
-            <img class="garden-sprout" src="assets/dashboard/hud-battle-swords.png" alt="" />
-            <span>КОМАНДА</span>
-          </div>
-          <div class="garden-count">Сила команды: 120</div>
-        </div>
-
-        <div class="garden-plots">
-          <button class="garden-plot ready" type="button" aria-label="Компактная грядка 1: готово">
-            <img class="crop crop-tomato" src="assets/dashboard/tomatto.png" alt="" />
-            <span class="plot-status">Готово!</span>
-            <img class="plot-ok" src="assets/dashboard/hub-ok.png" alt="" />
-          </button>
-
-          <button class="garden-plot timer" type="button" aria-label="Компактная грядка 2: растет">
-            <img class="crop crop-carrot" src="assets/dashboard/carrot.png" alt="" />
-            <span class="plot-status">23м 45с</span>
-            <img class="plot-timer" src="assets/dashboard/hub-timer.png" alt="" />
-          </button>
-
-          <button class="garden-plot ready" type="button" aria-label="Компактная грядка 3: готово">
-            <img class="crop crop-cucumber" src="assets/dashboard/cucumber.png" alt="" />
-            <span class="plot-status">Готово!</span>
-            <img class="plot-ok" src="assets/dashboard/hub-ok.png" alt="" />
-          </button>
-
-          <button class="garden-plot battle-entry-plot" type="button" aria-label="Перейти в бой">
-            <img class="battle-entry-icon" src="assets/dashboard/hud-battle-swords.png" alt="" />
-            <span class="battle-entry-text">В бой!</span>
-          </button>
-        </div>
-      </div>
-      <ng-container *ngComponentOutlet="dashboardCardsComponent"></ng-container>
-
-      <nav class="dashboard-nav-panel" aria-label="Основная навигация">
-        <button class="dashboard-nav-item active" type="button" aria-current="page">
-          <img src="assets/dashboard/hud-nav-home.png" alt="">
-          <span>ГЛАВНАЯ</span>
-        </button>
-
-        <button class="dashboard-nav-item" type="button">
-          <img src="assets/dashboard/hud-nav-garden.png" alt="">
-          <span>ОГОРОД</span>
-        </button>
-
-        <button class="dashboard-nav-item" type="button">
-          <img src="assets/dashboard/hud-battle-swords.png" alt="">
-          <span>БОЙ</span>
-        </button>
-
-        <button class="dashboard-nav-item" type="button">
-          <img src="assets/dashboard/hud-nav-team.png" alt="">
-          <span>КОМАНДА</span>
-        </button>
-
-        <button class="dashboard-nav-item" type="button">
-          <img src="assets/dashboard/hud-nav-profile.png" alt="">
-          <span>ПРОФИЛЬ</span>
-        </button>
-      </nav>
-    </section>
-  </main>
+        <gb-dashboard-nav-panel></gb-dashboard-nav-panel>
+      </section>
+    </main>
   </div>
 </ion-content>

@@ -1,18 +1,19 @@
-import { NgComponentOutlet } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
-import { DashboardCardsComponent } from './components/dashboard-cards/dashboard-cards.component';
+import { DashboardComponentsModule } from './components/dashboard-components.module';
+import { DashboardDataService } from './services/dashboard-data.service';
 
 @Component({
   selector: 'gb-dashboard',
   standalone: true,
-  imports: [IonContent, NgComponentOutlet],
+  imports: [AsyncPipe, IonContent, DashboardComponentsModule],
   host: { class: 'ion-page' },
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss'
 })
 export class DashboardPage implements OnInit {
-  readonly dashboardCardsComponent = DashboardCardsComponent;
+  readonly dashboardData = inject(DashboardDataService);
 
   dashboardScale = 1;
 
