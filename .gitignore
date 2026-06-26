@@ -4,6 +4,8 @@
 **/.angular/
 **/dist/
 **/.vs/
+/img/
+/tmp/
 *.suo
 *.user
 *.rsuser

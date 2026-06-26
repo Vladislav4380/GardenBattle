@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IIdentityService, InMemoryIdentityService>();
 builder.Services.AddSingleton<IGardenService, InMemoryGardenService>();
@@ -93,6 +94,7 @@ app.MapGet("/api/tournament/rating", (ITournamentService tournament) => Results.
 app.MapGet("/api/market/lots", (IMarketService market) => Results.Ok(market.GetLots()));
 app.MapPost("/api/payment/stars/invoice", (PaymentInvoiceRequest request, IPaymentService payment) => Results.Ok(payment.CreateTelegramStarsInvoice(request)));
 
+app.MapControllers();
 app.MapHub<BattleHub>("/battleHub");
 
 app.Run();

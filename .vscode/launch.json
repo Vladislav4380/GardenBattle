@@ -12,14 +12,14 @@
       "name": "Frontend Angular",
       "type": "node-terminal",
       "request": "launch",
-      "command": "npm.cmd run start",
+      "command": "npm.cmd run start -- --configuration development",
       "cwd": "${workspaceFolder}/src/frontend"
     }
   ],
   "compounds": [
     {
       "name": "Garden Battle: Frontend + Backend",
-      "configurations": ["Backend API (.NET)", "Frontend Angular"],
+      "configurations": ["Backend API", "Frontend Angular"],
       "stopAll": true
     }
   ]

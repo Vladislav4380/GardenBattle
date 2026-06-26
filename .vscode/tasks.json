@@ -5,7 +5,7 @@
       "label": "frontend: start",
       "type": "shell",
       "command": "npm.cmd",
-      "args": ["run", "start"],
+      "args": ["run", "start", "--", "--configuration", "development"],
       "options": {
         "cwd": "${workspaceFolder}/src/frontend"
       },

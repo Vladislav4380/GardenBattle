@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: 'starter-garden', pathMatch: 'full', redirectTo: 'garden' },
   { path: 'garden', loadComponent: () => import('./pages/garden/garden.page').then((m) => m.GardenPage) },
   { path: 'team', loadComponent: () => import('./pages/team/team.page').then((m) => m.TeamPage) },
+  { path: 'fight', loadComponent: () => import('./pages/fight/fight.page').then((m) => m.FightPage) },
   { path: 'battle', loadComponent: () => import('./pages/battle/battle.page').then((m) => m.BattlePage) },
   { path: 'tournament', loadComponent: () => import('./pages/tournament/tournament.page').then((m) => m.TournamentPage) },
   { path: 'market', loadComponent: () => import('./pages/market/market.page').then((m) => m.MarketPage) },

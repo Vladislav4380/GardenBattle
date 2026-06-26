@@ -57,3 +57,11 @@ export interface DashboardRewardsCardData {
   chestProgressCurrent: number;
   chestProgressTarget: number;
 }
+
+export interface DashboardDto {
+  header: DashboardHeaderData;
+  gardenCard: DashboardGardenCardData;
+  teamCard: DashboardTeamCardData;
+  tournamentCard: DashboardTournamentCardData;
+  rewardsCard: DashboardRewardsCardData;
+}
