@@ -7,6 +7,7 @@ export const routes: Routes = [
   { path: 'avatar-select', loadComponent: () => import('./pages/avatar-select/avatar-select.page').then((m) => m.AvatarSelectPage) },
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.page').then((m) => m.DashboardPage) },
   { path: 'starter-garden', pathMatch: 'full', redirectTo: 'garden' },
+  { path: 'garden/seedlings', loadComponent: () => import('./pages/garden-seedlings/garden-seedlings.page').then((m) => m.GardenSeedlingsPage) },
   { path: 'garden', loadComponent: () => import('./pages/garden/garden.page').then((m) => m.GardenPage) },
   { path: 'team', loadComponent: () => import('./pages/team/team.page').then((m) => m.TeamPage) },
   { path: 'fight', loadComponent: () => import('./pages/fight/fight.page').then((m) => m.FightPage) },

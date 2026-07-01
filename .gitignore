@@ -6,6 +6,7 @@
 **/.vs/
 /img/
 /tmp/
+/_unused_images_for_deletion/
 *.suo
 *.user
 *.rsuser

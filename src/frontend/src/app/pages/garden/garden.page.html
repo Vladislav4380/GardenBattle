@@ -1,189 +1,63 @@
-<ion-content fullscreen class="garden-page" scrollY="false">
+<ion-content fullscreen class="garden-page">
   <main
     class="garden-shell"
     (pointerdown)="onPointerDown($event)"
     (pointermove)="onPointerMove($event)"
     (pointerup)="onPointerUp()"
     (pointercancel)="onPointerUp()"
+    (wheel)="onWheel($event)"
     (touchstart)="onTouchStart($event)"
     (touchmove)="onTouchMove($event)"
     (touchend)="onTouchEnd($event)"
-    (wheel)="onWheel($event)"
   >
-    <header class="garden-header" aria-label="Garden resources">
-      <button class="avatar-button" type="button" aria-label="Open avatar page" (click)="openAvatar()">
-        <img src="/assets/avatars/young-gardener-preview.webp" alt="Gardener avatar" />
-      </button>
+    <div
+      class="map-canvas"
+      [style.width.px]="mapWidth"
+      [style.height.px]="mapHeight"
+      [style.left.px]="mapLeft"
+      [style.top.px]="mapTop"
+      [style.transform]="mapTransform"
+    >
+      <img class="full-map" src="/assets/garden/terrain/fullHd.png" alt="" draggable="false" aria-hidden="true" />
 
-      <div class="resource-row">
-        @for (resource of resources; track resource.label) {
-          <button class="resource-indicator" type="button" [attr.aria-label]="resource.label + ' ' + resource.value">
-            <img [src]="resource.image" [alt]="resource.label" />
-          </button>
+      @for (object of mapObjects; track object.id) {
+        <button
+          class="map-object"
+          type="button"
+          [class.is-ghost]="object.isGhost"
+          [class.is-invalid]="isInvalidObject(object)"
+          [ngStyle]="objectStyle(object)"
+          (dblclick)="onObjectDoubleClick($event, object)"
+          (pointerdown)="onObjectPointerDown($event, object)"
+          (pointerup)="onObjectPointerUp($event, object)"
+          (wheel)="onObjectWheel($event)"
+        >
+          <img [src]="object.image" [alt]="object.label" draggable="false" />
+        </button>
+      }
+
+      @for (object of mapObjects; track object.id + '-growth') {
+        @if (object.type === 'bed' && !object.isGhost && isGrowing(object)) {
+          <span class="growth-indicator" [ngStyle]="growthIndicatorStyle(object)">
+            <span class="growth-indicator__label">{{ growthLabel(object) }}</span>
+            <span class="growth-indicator__track">
+              <span class="growth-indicator__bar" [style.width.%]="growthProgress(object)"></span>
+            </span>
+          </span>
         }
-      </div>
-    </header>
-
-    <div class="action-strip" aria-label="Garden actions">
-      <button type="button" aria-label="Place crop bed" (click)="openCatalog('crops')">
-        <img src="/assets/garden/action-place-bed.png" alt="" />
-      </button>
-      <button type="button" aria-label="Buy seeds" (click)="openCatalog('crops')">
-        <img src="/assets/garden/action-buy-seeds.png" alt="" />
-      </button>
-      <button type="button" aria-label="Build" (click)="openCatalog('buildings')">
-        <img src="/assets/garden/action-build.png" alt="" />
-      </button>
+      }
     </div>
 
-    <section class="garden-stage" aria-label="Garden map">
-      <div class="garden-map" [ngStyle]="mapTransform()">
-        <div class="soil-grid"></div>
+    @if (dashboardData.header$ | async; as header) {
+      <gb-dashboard-header
+        [playerName]="header.playerName"
+        [coins]="header.coins"
+        [gems]="header.gems"
+        [xpCurrent]="header.xpCurrent"
+        [xpTarget]="header.xpTarget"
+      ></gb-dashboard-header>
+    }
 
-        @for (object of gardenObjects; track object.id) {
-          <gb-garden-object [object]="object" (select)="selectObject($event)"></gb-garden-object>
-        }
-
-        <div class="garden-timer timer-greenhouse"><span>45м 30с</span><i></i></div>
-        <div class="garden-timer timer-tomato"><span>8м 12с</span><i></i></div>
-        <div class="garden-timer timer-cucumber"><span>15м 45с</span><i></i></div>
-        <div class="garden-timer timer-carrot"><span>5м 20с</span><i></i></div>
-        <div class="garden-timer timer-banana"><span>20м 15с</span><i></i></div>
-        <div class="garden-timer timer-corn"><span>12м 5с</span><i></i></div>
-
-        @for (item of ambient; track item.title + item.x) {
-          <img
-            class="ambient {{ item.className }}"
-            [src]="item.image"
-            [alt]="item.title"
-            [style.left.px]="item.x"
-            [style.top.px]="item.y"
-            draggable="false"
-          />
-        }
-
-        <img
-          class="gardener"
-          [src]="gardenerFrame()"
-          alt="Gardener"
-          [style.left.px]="gardenerX()"
-          [style.top.px]="gardenerY()"
-          draggable="false"
-        />
-
-      </div>
-    </section>
-
-    <nav class="bottom-nav" aria-label="Garden navigation">
-      <button type="button" aria-label="Home" (click)="navigateHome()"><img src="/assets/garden/nav-home.png" alt="" /></button>
-      <button type="button" aria-label="Crops" (click)="openCatalog('crops')"><img src="/assets/garden/nav-crops.png" alt="" /></button>
-      <button type="button" aria-label="Buildings" (click)="openCatalog('buildings')"><img src="/assets/garden/nav-buildings.png" alt="" /></button>
-      <button type="button" aria-label="Inventory" (click)="openCatalog('inventory')"><img src="/assets/garden/nav-inventory.png" alt="" /></button>
-      <button type="button" aria-label="Market" (click)="navigateMarket()"><img src="/assets/garden/nav-market.png" alt="" /></button>
-    </nav>
+    <gb-dashboard-nav-panel></gb-dashboard-nav-panel>
   </main>
-
-  @if (selectedObject(); as object) {
-    <section class="garden-popup" [class.building-popup]="object.kind === 'building'">
-      <button class="popup-close" type="button" aria-label="Close popup" (click)="closePopup()">×</button>
-      <h2>{{ object.title }}</h2>
-      @if (object.kind === 'crop') {
-        <p>Storage: 18 / 20</p>
-        <p>Growth: 8м 12с</p>
-        <div class="popup-actions">
-          <button type="button">Details</button>
-          <button type="button">Collect</button>
-          <button type="button">Speed Up</button>
-        </div>
-      } @else {
-        <p>Placed on the garden map</p>
-        <div class="popup-actions">
-          <button type="button">Info</button>
-          <button type="button">Upgrade</button>
-          <button type="button">Move</button>
-        </div>
-      }
-    </section>
-  }
-
-  @if (ghostImage(); as ghost) {
-    <button
-      class="placement-ghost"
-      type="button"
-      aria-label="Placement ghost"
-      [style.left.px]="ghostX()"
-      [style.top.px]="ghostY()"
-    >
-      <img [src]="ghost" alt="" draggable="false" />
-    </button>
-  }
-
-  @if (catalogMode(); as mode) {
-    <section class="catalog-backdrop" aria-modal="true" role="dialog">
-      <article class="catalog-panel">
-        <header class="catalog-header">
-          <h1>{{ activeCatalogTitle() }}</h1>
-          <button type="button" aria-label="Close catalog" (click)="closeCatalog()">×</button>
-        </header>
-
-        @if (mode === 'crops') {
-          <div class="catalog-list crops-list">
-            @for (crop of crops; track crop.id) {
-              <article class="crop-card" [class.is-locked]="crop.locked">
-                <img class="crop-card-bg" src="/assets/garden/crop-card-style.png" alt="" />
-                <img class="catalog-object" [src]="crop.image" [alt]="crop.title" />
-                <div class="catalog-copy">
-                  <h2>{{ crop.title }}</h2>
-                  <p>{{ crop.description }}</p>
-                  <dl>
-                    <div><dt>Speed</dt><dd>{{ crop.speed }}</dd></div>
-                    <div><dt>Storage</dt><dd>{{ crop.storage }}</dd></div>
-                  </dl>
-                  <div class="catalog-actions">
-                    <button type="button" [disabled]="crop.locked" (click)="placeCropBed(crop)">Place Crop Bed</button>
-                    <button type="button" [disabled]="crop.locked" (click)="showDetails(crop)">Details</button>
-                  </div>
-                </div>
-              </article>
-            }
-          </div>
-        }
-
-        @if (mode === 'buildings') {
-          <div class="catalog-list building-list">
-            @for (building of buildings; track building.id) {
-              <article class="building-card" [class.is-locked]="building.locked">
-                <img class="building-art" [src]="building.image" [alt]="building.title" />
-                <div class="catalog-copy">
-                  <h2>{{ building.title }}</h2>
-                  <p>{{ building.description }}</p>
-                  <button type="button" [disabled]="building.locked" (click)="build(building)">Build</button>
-                </div>
-              </article>
-            }
-          </div>
-        }
-
-        @if (mode === 'inventory') {
-          <div class="inventory-panel">
-            <div class="inventory-grid">
-              @for (item of inventoryItems; track item) {
-                <button class="inventory-slot" type="button">
-                  <img [src]="item" alt="Inventory item" />
-                </button>
-              }
-            </div>
-            <div class="inventory-note">
-              <span>Fertilizers</span>
-              <span>Artifacts</span>
-              <span>Boosters</span>
-              <span>Ancient relics</span>
-              <span>Resources</span>
-              <span>Temporary items</span>
-            </div>
-          </div>
-        }
-      </article>
-    </section>
-  }
 </ion-content>

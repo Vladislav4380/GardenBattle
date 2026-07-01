@@ -1,586 +1,566 @@
-import { NgClass, NgStyle } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, Output, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { AsyncPipe, NgStyle } from '@angular/common';
+import { Component, HostListener, OnDestroy, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
-
-type CatalogMode = 'crops' | 'buildings' | 'inventory' | null;
-type PlacementGhost = 'crop' | 'building' | null;
-
-interface ResourceIndicator {
-  readonly label: string;
-  readonly value: number;
-  readonly image: string;
-}
-
-interface GardenCatalogItem {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly image: string;
-  readonly speed?: string;
-  readonly storage?: string;
-  readonly locked?: boolean;
-}
-
-interface GardenObject {
-  readonly id: string;
-  readonly kind: 'crop' | 'building' | 'tree' | 'rock' | 'river' | 'path';
-  readonly title: string;
-  readonly image?: string;
-  readonly cropClass?: string;
-  readonly x: number;
-  readonly y: number;
-  readonly w: number;
-  readonly h: number;
-  readonly event?: GardenEvent;
-  readonly locked?: boolean;
-}
-
-interface GardenEvent {
-  readonly title: string;
-  readonly image: string;
-  readonly x?: number;
-  readonly y?: number;
-}
-
-interface AmbientObject {
-  readonly title: string;
-  readonly image: string;
-  readonly className: string;
-  readonly x: number;
-  readonly y: number;
-}
-
-const gardenAsset = (name: string) => `/assets/garden/${name}.png`;
-
-@Component({
-  selector: 'gb-garden-object',
-  standalone: true,
-  imports: [NgClass, NgStyle],
-  template: `
-    <button
-      class="garden-object"
-      type="button"
-      [class.is-crop]="object.kind === 'crop'"
-      [class.is-building]="object.kind === 'building'"
-      [class.is-locked]="object.locked"
-      [ngStyle]="style()"
-      [attr.aria-label]="object.title"
-      (click)="select.emit(object)"
-    >
-      @if (object.kind === 'crop') {
-        <span class="crop-bed-art" [ngClass]="object.cropClass">
-          @if (object.image) {
-            <img class="crop-reference" [src]="object.image" [alt]="object.title" draggable="false" />
-          }
-        </span>
-      } @else if (object.image) {
-        <img [src]="object.image" [alt]="object.title" draggable="false" />
-      } @else {
-        <span class="terrain-object" [ngClass]="object.kind"></span>
-      }
-
-      @if (object.event; as event) {
-        <span class="event-bubble" [style.left.px]="event.x ?? 60" [style.top.px]="event.y ?? -38">
-          <img [src]="event.image" [alt]="event.title" draggable="false" />
-        </span>
-      }
-    </button>
-  `,
-  styles: [`
-    :host {
-      position: absolute;
-      left: 0;
-      top: 0;
-      display: block;
-      pointer-events: auto;
-    }
-
-    .garden-object {
-      appearance: none;
-      position: absolute;
-      display: grid;
-      place-items: center;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: inherit;
-      cursor: pointer;
-      touch-action: manipulation;
-      transform: translateZ(0);
-    }
-
-    .garden-object:focus-visible {
-      outline: 3px solid rgba(255, 246, 168, .9);
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
-
-    .garden-object img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 18px 15px rgba(0, 0, 0, .42));
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .crop-bed-art {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100%;
-      opacity: .01;
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, transparent 0 9%, #8b5a23 10% 16%, transparent 17%),
-        linear-gradient(225deg, transparent 0 9%, #4f2d11 10% 16%, transparent 17%),
-        radial-gradient(ellipse at 50% 54%, #44230f 0 42%, #2d170b 43% 57%, transparent 58%),
-        linear-gradient(145deg, #9a6427 0 18%, #573216 19% 82%, #2d1809 83%);
-      box-shadow:
-        inset 0 0 0 3px rgba(38, 20, 7, .8),
-        inset 0 0 0 7px rgba(154, 94, 28, .8),
-        0 15px 14px rgba(0, 0, 0, .32);
-      transform: perspective(260px) rotateX(48deg) rotateZ(-4deg);
-      transform-origin: center bottom;
-    }
-
-    .crop-bed-art::before,
-    .crop-bed-art::after {
-      content: '';
-      position: absolute;
-      left: 16%;
-      right: 16%;
-      border-radius: 999px;
-      background: rgba(69, 38, 17, .7);
-      box-shadow: 0 18px 0 rgba(69, 38, 17, .62), 0 36px 0 rgba(69, 38, 17, .52);
-    }
-
-    .crop-bed-art::before {
-      top: 32%;
-      height: 8px;
-    }
-
-    .crop-bed-art::after {
-      top: 24%;
-      bottom: 20%;
-      width: 8px;
-      left: 32%;
-      right: auto;
-      box-shadow: 34px 0 0 rgba(69, 38, 17, .62), 68px 0 0 rgba(69, 38, 17, .52);
-    }
-
-    .crop-reference {
-      position: absolute;
-      z-index: 3;
-      left: -10%;
-      top: -44%;
-      width: 120%;
-      height: 120%;
-      object-fit: contain;
-      mask-image: radial-gradient(ellipse at 50% 52%, #000 0 54%, transparent 76%);
-      opacity: .98;
-      transform: perspective(260px) rotateX(-48deg) rotateZ(4deg);
-      transform-origin: center bottom;
-      filter: drop-shadow(0 10px 8px rgba(0, 0, 0, .38));
-    }
-
-    .garden-object.is-building img {
-      border-radius: 18px;
-      mask-image: radial-gradient(ellipse at 50% 58%, #000 0 68%, transparent 82%);
-      opacity: .01;
-      filter: drop-shadow(0 22px 18px rgba(0, 0, 0, .48));
-    }
-
-    .garden-object.is-locked {
-      filter: grayscale(.25) opacity(.88);
-    }
-
-    .terrain-object {
-      display: block;
-      width: 100%;
-      height: 100%;
-      opacity: .01;
-    }
-
-    .tree {
-      border-radius: 48% 52% 52% 48%;
-      background:
-        radial-gradient(circle at 50% 18%, #74c34f 0 22%, transparent 23%),
-        radial-gradient(circle at 34% 34%, #3f8f2d 0 28%, transparent 29%),
-        radial-gradient(circle at 66% 36%, #2e7f28 0 30%, transparent 31%),
-        linear-gradient(90deg, transparent 44%, #7b4a19 45% 55%, transparent 56%);
-      filter: drop-shadow(0 16px 9px rgba(0, 0, 0, .34));
-    }
-
-    .rock {
-      border-radius: 42% 58% 54% 46%;
-      background: linear-gradient(145deg, #9b9b92, #4d514d 58%, #2f332f);
-      box-shadow: inset -10px -10px 18px rgba(0, 0, 0, .26);
-    }
-
-    .river {
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 30% 40%, rgba(255, 255, 255, .34), transparent 18%),
-        linear-gradient(90deg, #2d9bd4, #76d3f4 48%, #2785be);
-      opacity: .86;
-      box-shadow: inset 0 0 18px rgba(255, 255, 255, .22);
-    }
-
-    .path {
-      border-radius: 999px;
-      background:
-        repeating-linear-gradient(90deg, rgba(110, 77, 35, .75) 0 18px, rgba(154, 116, 58, .75) 19px 36px);
-      opacity: .9;
-    }
-
-    .event-bubble {
-      position: absolute;
-      width: 72px;
-      height: 82px;
-      pointer-events: auto;
-      animation: eventFloat 2.2s ease-in-out infinite;
-    }
-
-    .event-bubble img {
-      width: 100%;
-      height: 100%;
-    }
-
-    @keyframes eventFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-7px); }
-    }
-  `]
-})
-export class GardenObjectComponent {
-  @Input({ required: true })
-  object!: GardenObject;
-
-  @Output()
-  readonly select = new EventEmitter<GardenObject>();
-
-  style(): Record<string, string> {
-    return {
-      transform: `translate(${this.object.x}px, ${this.object.y}px)`,
-      width: `${this.object.w}px`,
-      height: `${this.object.h}px`
-    };
-  }
-}
+import { DashboardComponentsModule } from '../dashboard/components/dashboard-components.module';
+import { DashboardDataService } from '../dashboard/services/dashboard-data.service';
+import { GARDEN_SEEDLINGS, GardenSeedlingCatalogItem } from './garden-seedlings.data';
 
 @Component({
   standalone: true,
-  imports: [IonContent, GardenObjectComponent, NgStyle],
+  imports: [AsyncPipe, NgStyle, IonContent, DashboardComponentsModule],
   host: { class: 'ion-page' },
   templateUrl: './garden.page.html',
   styleUrl: './garden.page.scss'
 })
-export class GardenPage {
+export class GardenPage implements OnDestroy {
+  readonly dashboardData = inject(DashboardDataService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly resources: ResourceIndicator[] = [
-    { label: 'Coins', value: 1250, image: gardenAsset('resource-coins') },
-    { label: 'Stars', value: 120, image: gardenAsset('resource-stars') },
-    { label: 'Gems', value: 35, image: gardenAsset('resource-gems') }
-  ];
-
-  readonly crops: GardenCatalogItem[] = [
-    { id: 'tomato', title: 'Tomato', description: 'Balanced food crop for daily garden income.', speed: '10 min', storage: '18 / 20', image: gardenAsset('crop-tomato-bed') },
-    { id: 'cucumber', title: 'Cucumber', description: 'Fast-growing crop with steady storage turnover.', speed: '8 min', storage: '12 / 20', image: gardenAsset('crop-cucumber-bed') },
-    { id: 'carrot', title: 'Carrot', description: 'Reliable root crop with strong base yield.', speed: '12 min', storage: '9 / 18', image: gardenAsset('crop-carrot-bed') },
-    { id: 'banana', title: 'Banana', description: 'Tropical bed for rare market recipes.', speed: '24 min', storage: '4 / 12', image: gardenAsset('crop-banana-bed') },
-    { id: 'corn', title: 'Corn', description: 'Tall field crop with strong volume output.', speed: '16 min', storage: '14 / 24', image: gardenAsset('crop-corn-bed') },
-    { id: 'pepper', title: 'Pepper', description: 'Spicy crop used in boosters and trades.', speed: '18 min', storage: '6 / 14', image: gardenAsset('crop-pepper-bed') },
-    { id: 'pumpkin', title: 'Pumpkin', description: 'Large harvest crop for seasonal orders.', speed: '30 min', storage: '2 / 8', image: gardenAsset('crop-pumpkin-bed'), locked: true },
-    { id: 'broccoli', title: 'Broccoli', description: 'Premium crop unlocked by garden level.', speed: '22 min', storage: '0 / 10', image: gardenAsset('crop-broccoli-bed'), locked: true },
-    { id: 'watermelon', title: 'Watermelon', description: 'Heavy summer crop for big contracts.', speed: '35 min', storage: '0 / 6', image: gardenAsset('crop-watermelon-bed'), locked: true }
-  ];
-
-  readonly buildings: GardenCatalogItem[] = [
-    { id: 'greenhouse', title: 'Greenhouse', description: 'Protects beds and improves growth cycles.', image: gardenAsset('building-greenhouse') },
-    { id: 'laboratory', title: 'Laboratory', description: 'Researches boosters and crop upgrades.', image: gardenAsset('building-laboratory') },
-    { id: 'market', title: 'Market', description: 'Opens player trading and daily offers.', image: gardenAsset('building-market') },
-    { id: 'warehouse', title: 'Warehouse', description: 'Expands crop and resource storage.', image: gardenAsset('building-warehouse') },
-    { id: 'well', title: 'Well', description: 'Supports watering events and garden upkeep.', image: gardenAsset('building-well') },
-    { id: 'locked-1', title: 'Locked Building', description: 'Unlocks with garden progress.', image: gardenAsset('building-locked'), locked: true },
-    { id: 'locked-2', title: 'Locked Building', description: 'Unlocks with garden progress.', image: gardenAsset('building-locked'), locked: true }
-  ];
-
-  readonly gardenObjects: GardenObject[] = [
-    { id: 'river', kind: 'river', title: 'River', x: 790, y: 80, w: 84, h: 760 },
-    { id: 'path-main', kind: 'path', title: 'Garden path', x: 105, y: 470, w: 650, h: 46 },
-    { id: 'path-branch', kind: 'path', title: 'Garden path', x: 456, y: 255, w: 42, h: 430 },
-    { id: 'tomato-bed', kind: 'crop', title: 'Tomato crop bed', cropClass: 'crop-tomato', image: gardenAsset('crop-tomato-bed'), x: 120, y: 230, w: 150, h: 112, event: { title: 'Water event', image: gardenAsset('event-water'), x: 46, y: -58 } },
-    { id: 'cucumber-bed', kind: 'crop', title: 'Cucumber crop bed', cropClass: 'crop-cucumber', image: gardenAsset('crop-cucumber-bed'), x: 330, y: 240, w: 150, h: 112, event: { title: 'Weeds event', image: gardenAsset('event-weeds'), x: 52, y: -60 } },
-    { id: 'carrot-bed', kind: 'crop', title: 'Carrot crop bed', cropClass: 'crop-carrot', image: gardenAsset('crop-carrot-bed'), x: 540, y: 240, w: 150, h: 112 },
-    { id: 'corn-bed', kind: 'crop', title: 'Corn crop bed', cropClass: 'crop-corn', image: gardenAsset('crop-corn-bed'), x: 120, y: 410, w: 150, h: 112, event: { title: 'Ladybug event', image: gardenAsset('event-ladybug'), x: 50, y: -60 } },
-    { id: 'pepper-bed', kind: 'crop', title: 'Pepper crop bed', cropClass: 'crop-pepper', image: gardenAsset('crop-pepper-bed'), x: 330, y: 410, w: 150, h: 112, event: { title: 'Mystery event', image: gardenAsset('event-question'), x: 50, y: -60 } },
-    { id: 'pumpkin-bed', kind: 'crop', title: 'Pumpkin crop bed', cropClass: 'crop-pumpkin', image: gardenAsset('crop-pumpkin-bed'), x: 540, y: 410, w: 150, h: 112 },
-    { id: 'broccoli-bed', kind: 'crop', title: 'Broccoli crop bed', cropClass: 'crop-broccoli', image: gardenAsset('crop-broccoli-bed'), x: 120, y: 590, w: 150, h: 112 },
-    { id: 'watermelon-bed', kind: 'crop', title: 'Watermelon crop bed', cropClass: 'crop-watermelon', image: gardenAsset('crop-watermelon-bed'), x: 330, y: 590, w: 150, h: 112 },
-    { id: 'banana-bed', kind: 'crop', title: 'Banana crop bed', cropClass: 'crop-banana', image: gardenAsset('crop-banana-bed'), x: 540, y: 590, w: 150, h: 112 },
-    { id: 'greenhouse', kind: 'building', title: 'Greenhouse', image: gardenAsset('building-greenhouse'), x: 170, y: 760, w: 170, h: 124 },
-    { id: 'well', kind: 'building', title: 'Well', image: gardenAsset('building-well'), x: 420, y: 760, w: 118, h: 120 },
-    { id: 'warehouse', kind: 'building', title: 'Warehouse', image: gardenAsset('building-warehouse'), x: 600, y: 750, w: 132, h: 136 },
-    { id: 'laboratory', kind: 'building', title: 'Laboratory', image: gardenAsset('building-laboratory'), x: 88, y: 930, w: 158, h: 134 },
-    { id: 'market', kind: 'building', title: 'Market', image: gardenAsset('building-market'), x: 520, y: 920, w: 158, h: 132 },
-    { id: 'tree-a', kind: 'tree', title: 'Tree', x: 40, y: 185, w: 76, h: 108 },
-    { id: 'tree-b', kind: 'tree', title: 'Tree', x: 690, y: 185, w: 76, h: 108 },
-    { id: 'tree-c', kind: 'tree', title: 'Tree', x: 700, y: 630, w: 76, h: 108 },
-    { id: 'rock-a', kind: 'rock', title: 'Rock', x: 670, y: 545, w: 58, h: 42 },
-    { id: 'rock-b', kind: 'rock', title: 'Rock', x: 62, y: 710, w: 64, h: 45 }
-  ];
-
-  readonly ambient: AmbientObject[] = [
-    { title: 'Butterfly', image: gardenAsset('ambient-butterfly'), className: 'butterfly', x: 250, y: 165 },
-    { title: 'Bee', image: gardenAsset('ambient-bee'), className: 'bee', x: 665, y: 275 },
-    { title: 'Bird', image: gardenAsset('ambient-bird'), className: 'bird', x: 500, y: 116 },
-    { title: 'Cloud', image: gardenAsset('ambient-cloud'), className: 'cloud cloud-a', x: 86, y: 92 },
-    { title: 'Cloud', image: gardenAsset('ambient-cloud'), className: 'cloud cloud-b', x: 610, y: 80 }
-  ];
-
-  readonly inventoryItems = [
-    gardenAsset('item-coin'), gardenAsset('item-gem'), gardenAsset('item-star'), gardenAsset('item-bag'), gardenAsset('item-potion'),
-    gardenAsset('item-map'), gardenAsset('item-shovel'), gardenAsset('item-book'), gardenAsset('item-chest'), gardenAsset('item-crystal')
-  ];
-
-  readonly catalogMode = signal<CatalogMode>(null);
-  readonly placementGhost = signal<PlacementGhost>(null);
-  readonly selectedObject = signal<GardenObject | null>(null);
-  readonly scale = signal(.52);
-  readonly translateX = signal(-28);
-  readonly translateY = signal(72);
-  readonly ghostX = signal(195);
-  readonly ghostY = signal(430);
-  readonly gardenerFrame = signal(gardenAsset('gardener-front'));
-  readonly gardenerX = signal(382);
-  readonly gardenerY = signal(650);
-
-  readonly activeCatalogTitle = computed(() => {
-    switch (this.catalogMode()) {
-      case 'crops': return 'Crop Catalog';
-      case 'buildings': return 'Buildings Catalog';
-      case 'inventory': return 'Inventory';
-      default: return '';
+  readonly imageWidth = 1672;
+  readonly imageHeight = 941;
+  readonly playArea = {
+    x: 620,
+    y: 210,
+    width: 400,
+    height: 520
+  };
+  readonly mapObjects: GardenMapObject[] = [
+    {
+      id: 'garden-object-steel-table',
+      type: 'table',
+      label: 'Steel Table',
+      image: '/assets/garden/buildings/steel_table-cropped.png?v=1',
+      x: 900,
+      y: 230,
+      width: 240,
+      height: 217,
+      scale: 0.624
     }
-  });
+  ];
 
-  readonly mapTransform = computed(() => ({
-    transform: `translate3d(${this.translateX()}px, ${this.translateY()}px, 0) scale(${this.scale()})`
-  }));
+  zoom = 1;
+  panX = 0;
+  panY = 0;
+  now = Date.now();
+  readonly mapWidth = this.imageWidth;
+  readonly mapHeight = this.imageHeight;
 
-  readonly ghostImage = computed(() => {
-    const ghost = this.placementGhost();
-    return ghost === 'crop' ? gardenAsset('ghost-crop-bed') : ghost === 'building' ? gardenAsset('ghost-building') : null;
-  });
-
-  readonly selectedPopupTitle = computed(() => {
-    const object = this.selectedObject();
-    return object?.title ?? '';
-  });
-
-  private dragging = false;
+  private minZoom = 1;
+  private readonly maxZoom = 2.2;
+  private baseScale = 1;
+  private viewportWidth = window.innerWidth;
+  private viewportHeight = window.innerHeight;
+  private isPanning = false;
+  private draggingObject: GardenMapObject | null = null;
+  private nextBedId = 1;
   private lastPointerX = 0;
   private lastPointerY = 0;
-  private initialPinchDistance = 0;
-  private initialScale = 1;
-  private readonly minScale = .48;
-  private readonly maxScale = 1.55;
-  private readonly mapWidth = 853;
-  private readonly mapHeight = 1518;
+  private lastObjectTapAt = 0;
+  private lastObjectTapId: string | null = null;
+  private pinchStartDistance = 0;
+  private pinchStartZoom = 1;
+  private readonly timerId = window.setInterval(() => {
+    this.now = Date.now();
+  }, 1000);
 
   constructor() {
-    window.setInterval(() => this.moveGardener(), 3200);
+    this.mapObjects.forEach((object) => this.clampObjectPosition(object));
+    this.updateViewportSize();
+    this.route.queryParamMap.subscribe((params) => {
+      const seedlingId = params.get('seedling');
+      const seedling = GARDEN_SEEDLINGS.find((item) => item.id === seedlingId);
+
+      if (!seedling) {
+        return;
+      }
+
+      const cursorX = Number(params.get('cursorX'));
+      const cursorY = Number(params.get('cursorY'));
+      this.createGhostBed(
+        seedling,
+        Number.isFinite(cursorX) && Number.isFinite(cursorY) ? { x: cursorX, y: cursorY } : undefined
+      );
+      void this.router.navigate([], { relativeTo: this.route, queryParams: {}, replaceUrl: true });
+    });
   }
 
-  openAvatar(): void {
-    void this.router.navigateByUrl('/avatar-select');
+  get mapTransform(): string {
+    return `translate3d(-50%, -50%, 0) scale(${this.totalScale})`;
   }
 
-  openCatalog(mode: CatalogMode): void {
-    this.selectedObject.set(null);
-    this.catalogMode.set(mode);
+  get mapLeft(): number {
+    return Number((this.viewportWidth / 2 + this.panX).toFixed(2));
   }
 
-  closeCatalog(): void {
-    this.catalogMode.set(null);
+  get mapTop(): number {
+    return Number((this.viewportHeight / 2 + this.panY).toFixed(2));
   }
 
-  selectObject(object: GardenObject): void {
-    this.selectedObject.set(object);
+  objectStyle(object: GardenMapObject): Record<string, string> {
+    return {
+      left: `${object.x}px`,
+      top: `${object.y}px`,
+      width: `${object.width}px`,
+      height: `${object.height}px`,
+      transform: `scale(${object.scale})`,
+      opacity: object.isGhost ? '.68' : '1',
+      zIndex: object.isGhost ? '6' : '2'
+    };
   }
 
-  closePopup(): void {
-    this.selectedObject.set(null);
+  growthIndicatorStyle(object: GardenMapObject): Record<string, string> {
+    return {
+      left: `${object.x + (object.width * object.scale) / 2}px`,
+      top: `${object.y - 18}px`
+    };
   }
 
-  navigateHome(): void {
-    void this.router.navigateByUrl('/dashboard');
+  isInvalidObject(object: GardenMapObject): boolean {
+    return Boolean(object.isGhost && this.isObjectOverlapping(object));
   }
 
-  navigateMarket(): void {
-    void this.router.navigateByUrl('/market');
-  }
-
-  placeCropBed(item: GardenCatalogItem): void {
-    if (item.locked) {
-      return;
+  growthProgress(object: GardenMapObject): number {
+    if (!object.plantedAt || !object.growthSeconds) {
+      return 0;
     }
-    this.catalogMode.set(null);
-    this.selectedObject.set(null);
-    this.placementGhost.set('crop');
+
+    const elapsedSeconds = (this.now - object.plantedAt) / 1000;
+    return Math.min(100, Math.max(0, (elapsedSeconds / object.growthSeconds) * 100));
   }
 
-  build(item: GardenCatalogItem): void {
-    if (item.locked) {
-      return;
+  growthLabel(object: GardenMapObject): string {
+    if (!object.plantedAt || !object.growthSeconds) {
+      return '';
     }
-    this.catalogMode.set(null);
-    this.selectedObject.set(null);
-    this.placementGhost.set('building');
+
+    const remainingSeconds = Math.max(0, Math.ceil(object.growthSeconds - (this.now - object.plantedAt) / 1000));
+
+    if (remainingSeconds === 0) {
+      return 'Готово';
+    }
+
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = remainingSeconds % 60;
+
+    return minutes > 0 ? `${minutes}м ${seconds}с` : `${seconds}с`;
   }
 
-  showDetails(item: GardenCatalogItem): void {
-    if (item.locked) {
-      return;
-    }
+  isGrowing(object: GardenMapObject): boolean {
+    return Boolean(object.plantedAt && object.growthSeconds && this.growthProgress(object) < 100);
+  }
+
+  ngOnDestroy(): void {
+    window.clearInterval(this.timerId);
+  }
+
+  private get totalScale(): number {
+    return this.baseScale * this.zoom;
+  }
+
+  @HostListener('window:resize')
+  @HostListener('window:orientationchange')
+  updateViewportSize(): void {
+    this.viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+    this.viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+    this.updateMapSize();
+    this.zoom = this.clampZoom(this.zoom);
+    this.clampPan();
   }
 
   onPointerDown(event: PointerEvent): void {
-    if (this.placementGhost()) {
-      this.updateGhost(event.clientX, event.clientY);
+    if (event.pointerType === 'touch' || this.isUiEvent(event.target)) {
       return;
     }
 
-    if (event.pointerType === 'touch') {
-      return;
-    }
-    this.dragging = true;
+    event.preventDefault();
+    this.isPanning = true;
     this.lastPointerX = event.clientX;
     this.lastPointerY = event.clientY;
   }
 
   onPointerMove(event: PointerEvent): void {
-    if (this.placementGhost()) {
-      this.updateGhost(event.clientX, event.clientY);
+    if (this.draggingObject) {
+      event.preventDefault();
+      this.draggingObject.x += (event.clientX - this.lastPointerX) / this.totalScale;
+      this.draggingObject.y += (event.clientY - this.lastPointerY) / this.totalScale;
+      this.clampObjectPosition(this.draggingObject);
+      this.lastPointerX = event.clientX;
+      this.lastPointerY = event.clientY;
       return;
     }
 
-    if (!this.dragging) {
+    if (!this.isPanning) {
       return;
     }
-    const dx = event.clientX - this.lastPointerX;
-    const dy = event.clientY - this.lastPointerY;
+
+    event.preventDefault();
+    this.panBy(event.clientX - this.lastPointerX, event.clientY - this.lastPointerY);
     this.lastPointerX = event.clientX;
     this.lastPointerY = event.clientY;
-    this.panBy(dx, dy);
   }
 
   onPointerUp(): void {
-    this.dragging = false;
+    this.finishDragging();
+  }
+
+  onWheel(event: WheelEvent): void {
+    if (this.isUiEvent(event.target)) {
+      return;
+    }
+
+    event.preventDefault();
+    const direction = event.deltaY > 0 ? -0.08 : 0.08;
+    this.zoom = this.clampZoom(this.zoom + direction);
+    this.clampPan();
+  }
+
+  onObjectDoubleClick(event: MouseEvent, object: GardenMapObject): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (object.type === 'table' && !this.hasPendingGhost()) {
+      this.openSeedlingsPage();
+    }
+  }
+
+  onObjectPointerDown(event: PointerEvent, object: GardenMapObject): void {
+    event.stopPropagation();
+
+    if (!object.isGhost) {
+      return;
+    }
+
+    event.preventDefault();
+    this.isPanning = false;
+    this.draggingObject = object;
+    this.lastPointerX = event.clientX;
+    this.lastPointerY = event.clientY;
+  }
+
+  onObjectPointerUp(event: PointerEvent, object: GardenMapObject): void {
+    event.stopPropagation();
+
+    if (object.isGhost) {
+      this.finishDragging();
+      return;
+    }
+
+    if (object.type !== 'table' || object.isGhost || this.hasPendingGhost()) {
+      return;
+    }
+
+    const now = Date.now();
+    const isSameObject = this.lastObjectTapId === object.id;
+    const isDoubleTap = isSameObject && now - this.lastObjectTapAt <= 360;
+
+    this.lastObjectTapAt = now;
+    this.lastObjectTapId = object.id;
+
+    if (isDoubleTap) {
+      event.preventDefault();
+      this.lastObjectTapAt = 0;
+      this.lastObjectTapId = null;
+      this.openSeedlingsPage();
+    }
+  }
+
+  onObjectWheel(event: WheelEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   onTouchStart(event: TouchEvent): void {
-    if (this.placementGhost() && event.touches.length > 0) {
-      this.updateGhost(event.touches[0].clientX, event.touches[0].clientY);
+    if (this.isUiEvent(event.target)) {
       return;
     }
 
     if (event.touches.length === 1) {
-      this.dragging = true;
+      this.isPanning = true;
       this.lastPointerX = event.touches[0].clientX;
       this.lastPointerY = event.touches[0].clientY;
+      return;
     }
 
-    if (event.touches.length === 2) {
-      this.dragging = false;
-      this.initialPinchDistance = this.distance(event.touches[0], event.touches[1]);
-      this.initialScale = this.scale();
+    if (event.touches.length !== 2) {
+      return;
     }
+
+    this.isPanning = false;
+    this.pinchStartDistance = this.touchDistance(event.touches[0], event.touches[1]);
+    this.pinchStartZoom = this.zoom;
   }
 
   onTouchMove(event: TouchEvent): void {
-    if (this.placementGhost() && event.touches.length > 0) {
+    if (event.touches.length === 1 && this.isPanning) {
       event.preventDefault();
-      this.updateGhost(event.touches[0].clientX, event.touches[0].clientY);
+      this.panBy(event.touches[0].clientX - this.lastPointerX, event.touches[0].clientY - this.lastPointerY);
+      this.lastPointerX = event.touches[0].clientX;
+      this.lastPointerY = event.touches[0].clientY;
       return;
     }
 
-    if (event.touches.length === 1 && this.dragging) {
-      const touch = event.touches[0];
-      this.panBy(touch.clientX - this.lastPointerX, touch.clientY - this.lastPointerY);
-      this.lastPointerX = touch.clientX;
-      this.lastPointerY = touch.clientY;
+    if (event.touches.length !== 2) {
       return;
     }
 
-    if (event.touches.length === 2) {
-      event.preventDefault();
-      const nextDistance = this.distance(event.touches[0], event.touches[1]);
-      const ratio = nextDistance / Math.max(this.initialPinchDistance, 1);
-      this.scale.set(this.clampScale(this.initialScale * ratio));
-      this.clampPan();
-    }
+    event.preventDefault();
+    const nextDistance = this.touchDistance(event.touches[0], event.touches[1]);
+    const ratio = nextDistance / Math.max(this.pinchStartDistance, 1);
+    this.zoom = this.clampZoom(this.pinchStartZoom * ratio);
+    this.clampPan();
   }
 
   onTouchEnd(event: TouchEvent): void {
+    if (event.touches.length === 0 && this.draggingObject?.isGhost) {
+      this.finishDragging();
+    }
+
     if (event.touches.length === 0) {
-      this.dragging = false;
-      this.initialPinchDistance = 0;
+      this.isPanning = false;
+    }
+
+    if (event.touches.length < 2) {
+      this.pinchStartDistance = 0;
     }
   }
 
-  onWheel(event: WheelEvent): void {
-    event.preventDefault();
-    const direction = event.deltaY > 0 ? -.08 : .08;
-    this.scale.set(this.clampScale(this.scale() + direction));
-    this.clampPan();
+  private createGhostBed(seedling: GardenSeedlingCatalogItem, screenPoint?: ScreenPoint): void {
+    this.removePendingGhosts();
+
+    const objectWidth = seedling.width * seedling.scale;
+    const objectHeight = seedling.height * seedling.scale;
+    const mapPoint = screenPoint ? this.screenToMapPoint(screenPoint) : undefined;
+    const targetX = mapPoint?.x ?? this.playArea.x + this.playArea.width / 2;
+    const targetY = mapPoint?.y ?? this.playArea.y + this.playArea.height / 2;
+    const bed: GardenMapObject = {
+      id: `garden-bed-${this.nextBedId++}`,
+      type: 'bed',
+      label: seedling.name,
+      image: seedling.image,
+      x: targetX - objectWidth / 2,
+      y: targetY - objectHeight / 2,
+      width: seedling.width,
+      height: seedling.height,
+      scale: seedling.scale,
+      growthSeconds: seedling.growthSeconds,
+      isGhost: true
+    };
+
+    this.clampObjectPosition(bed);
+    this.moveObjectToNearestFreeSpot(bed);
+    this.mapObjects.push(bed);
   }
 
-  @HostListener('window:resize')
-  clampPan(): void {
-    const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
-    const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
-    const scaledWidth = this.mapWidth * this.scale();
-    const scaledHeight = this.mapHeight * this.scale();
-    const minX = Math.min(0, viewportWidth - scaledWidth - 16);
-    const minY = Math.min(0, viewportHeight - scaledHeight - 96);
-    this.translateX.set(Math.max(minX, Math.min(16, this.translateX())));
-    this.translateY.set(Math.max(minY, Math.min(96, this.translateY())));
+  private hasPendingGhost(): boolean {
+    return this.mapObjects.some((object) => object.isGhost);
   }
+
+  private removePendingGhosts(): void {
+    for (let index = this.mapObjects.length - 1; index >= 0; index--) {
+      if (this.mapObjects[index].isGhost) {
+        this.mapObjects.splice(index, 1);
+      }
+    }
+
+    this.draggingObject = null;
+  }
+
+  private finishDragging(): void {
+    if (this.draggingObject?.isGhost && !this.isObjectOverlapping(this.draggingObject)) {
+      this.draggingObject.isGhost = false;
+      this.draggingObject.plantedAt = Date.now();
+    }
+
+    this.isPanning = false;
+    this.draggingObject = null;
+  }
+
+  private openSeedlingsPage(): void {
+    void this.router.navigateByUrl('/garden/seedlings');
+  }
+
+  private screenToMapPoint(point: ScreenPoint): ScreenPoint {
+    return {
+      x: this.imageWidth / 2 + (point.x - this.mapLeft) / this.totalScale,
+      y: this.imageHeight / 2 + (point.y - this.mapTop) / this.totalScale
+    };
+  }
+
+  private clampZoom(value: number): number {
+    return Number(Math.max(this.minZoom, Math.min(this.maxZoom, value)).toFixed(3));
+  }
+
+  private clampObjectPosition(object: GardenMapObject): void {
+    const objectWidth = object.width * object.scale;
+    const objectHeight = object.height * object.scale;
+    const minX = this.playArea.x;
+    const minY = this.playArea.y;
+    const maxX = this.playArea.x + this.playArea.width - objectWidth;
+    const maxY = this.playArea.y + this.playArea.height - objectHeight;
+
+    object.x = Number(Math.max(minX, Math.min(maxX, object.x)).toFixed(2));
+    object.y = Number(Math.max(minY, Math.min(maxY, object.y)).toFixed(2));
+  }
+
+  private isObjectOverlapping(object: GardenMapObject): boolean {
+    return this.mapObjects.some((candidate) => {
+      if (candidate.id === object.id || candidate.isGhost) {
+        return false;
+      }
+
+      return this.objectsIntersect(object, candidate);
+    });
+  }
+
+  private moveObjectToNearestFreeSpot(object: GardenMapObject): void {
+    if (!this.isObjectOverlapping(object)) {
+      return;
+    }
+
+    const originalX = object.x;
+    const originalY = object.y;
+    const step = 18;
+    const maxX = this.playArea.x + this.playArea.width - object.width * object.scale;
+    const maxY = this.playArea.y + this.playArea.height - object.height * object.scale;
+    let bestSpot: ScreenPoint | null = null;
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    for (let y = this.playArea.y; y <= maxY; y += step) {
+      for (let x = this.playArea.x; x <= maxX; x += step) {
+        object.x = Number(x.toFixed(2));
+        object.y = Number(y.toFixed(2));
+
+        if (this.isObjectOverlapping(object)) {
+          continue;
+        }
+
+        const distance = Math.hypot(x - originalX, y - originalY);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestSpot = { x, y };
+        }
+      }
+    }
+
+    if (bestSpot) {
+      object.x = Number(bestSpot.x.toFixed(2));
+      object.y = Number(bestSpot.y.toFixed(2));
+      return;
+    }
+
+    object.x = originalX;
+    object.y = originalY;
+  }
+
+  private objectsIntersect(a: GardenMapObject, b: GardenMapObject): boolean {
+    if (a.type === 'bed' && b.type === 'bed') {
+      return this.circlesIntersect(this.bedCircle(a), this.bedCircle(b));
+    }
+
+    return this.rectsIntersect(this.objectRect(a), this.objectRect(b));
+  }
+
+  private objectRect(object: GardenMapObject): MapRect {
+    const width = object.width * object.scale;
+    const height = object.height * object.scale;
+    const insetX = object.type === 'bed' ? width * 0.18 : width * 0.18;
+    const insetTop = object.type === 'bed' ? height * 0.24 : height * 0.18;
+    const insetBottom = object.type === 'bed' ? height * 0.14 : height * 0.18;
+    const walkwayGap = object.type === 'bed' ? 5 : 2;
+
+    return {
+      left: object.x + insetX - walkwayGap,
+      top: object.y + insetTop - walkwayGap,
+      right: object.x + width - insetX + walkwayGap,
+      bottom: object.y + height - insetBottom + walkwayGap
+    };
+  }
+
+  private rectsIntersect(a: MapRect, b: MapRect): boolean {
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  }
+
+  private bedCircle(object: GardenMapObject): MapCircle {
+    const width = object.width * object.scale;
+    const height = object.height * object.scale;
+
+    return {
+      x: object.x + width / 2,
+      y: object.y + height * 0.58,
+      radius: Math.min(width, height) * 0.36
+    };
+  }
+
+  private circlesIntersect(a: MapCircle, b: MapCircle): boolean {
+    const passage = 1;
+
+    return Math.hypot(a.x - b.x, a.y - b.y) < a.radius + b.radius + passage;
+  }
+
 
   private panBy(dx: number, dy: number): void {
-    this.translateX.update((value) => value + dx);
-    this.translateY.update((value) => value + dy);
+    this.panX += dx;
+    this.panY += dy;
     this.clampPan();
   }
 
-  private clampScale(value: number): number {
-    return Number(Math.max(this.minScale, Math.min(this.maxScale, value)).toFixed(3));
+  private clampPan(): void {
+    const scaledWidth = this.imageWidth * this.totalScale;
+    const scaledHeight = this.imageHeight * this.totalScale;
+    const maxX = Math.max(0, (scaledWidth - this.viewportWidth) / 2);
+    const maxY = Math.max(0, (scaledHeight - this.viewportHeight) / 2);
+
+    this.panX = Number(Math.max(-maxX, Math.min(maxX, this.panX)).toFixed(2));
+    this.panY = Number(Math.max(-maxY, Math.min(maxY, this.panY)).toFixed(2));
   }
 
-  private distance(a: Touch, b: Touch): number {
+  private updateMapSize(): void {
+    const coverScale = Math.max(this.viewportWidth / this.imageWidth, this.viewportHeight / this.imageHeight);
+
+    this.baseScale = coverScale;
+    this.minZoom = 1;
+  }
+
+  private touchDistance(a: Touch, b: Touch): number {
     return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
   }
 
-  private updateGhost(x: number, y: number): void {
-    this.ghostX.set(x);
-    this.ghostY.set(y);
+  private isUiEvent(target: EventTarget | null): boolean {
+    return target instanceof Element && Boolean(target.closest('gb-dashboard-header, gb-dashboard-nav-panel, button'));
   }
+}
 
-  private moveGardener(): void {
-    const frames = [
-      gardenAsset('gardener-front'),
-      gardenAsset('gardener-walk-1'),
-      gardenAsset('gardener-walk-2'),
-      gardenAsset('gardener-water'),
-      gardenAsset('gardener-walk-away')
-    ];
-    const frame = frames[Math.floor(Math.random() * frames.length)];
-    this.gardenerFrame.set(frame);
-    this.gardenerX.set(250 + Math.round(Math.random() * 330));
-    this.gardenerY.set(500 + Math.round(Math.random() * 350));
-  }
+interface GardenMapObject {
+  id: string;
+  type: 'table' | 'bed';
+  label: string;
+  image: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  scale: number;
+  growthSeconds?: number;
+  plantedAt?: number;
+  isGhost?: boolean;
+}
+
+interface ScreenPoint {
+  x: number;
+  y: number;
+}
+
+interface MapRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+interface MapCircle {
+  x: number;
+  y: number;
+  radius: number;
 }

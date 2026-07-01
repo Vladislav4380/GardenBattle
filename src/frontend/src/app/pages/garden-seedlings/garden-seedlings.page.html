@@ -1,0 +1,28 @@
+<ion-content fullscreen class="seedlings-page">
+  <main class="seedlings-shell">
+    <header class="seedlings-header">
+      <button class="back-button" type="button" (click)="backToGarden()" aria-label="Назад">‹</button>
+      <div>
+        <h1>Саженцы</h1>
+        <p>Выбери грядку для размещения на огороде</p>
+      </div>
+    </header>
+
+    <section class="seedlings-grid" aria-label="Доступные саженцы">
+      @for (seedling of seedlings; track seedling.id) {
+        <article class="seedling-card">
+          <div class="seedling-preview">
+            <img [src]="seedling.image" [alt]="seedling.name" draggable="false" />
+          </div>
+
+          <div class="seedling-info">
+            <h2>{{ seedling.name }}</h2>
+            <p>{{ seedling.description }}</p>
+          </div>
+
+          <button class="grow-button" type="button" (click)="grow($event, seedling)">Вырастить</button>
+        </article>
+      }
+    </section>
+  </main>
+</ion-content>
